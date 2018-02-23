@@ -51,6 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _batteryLevel = 'Battery level: unknown.';
 
+  String _chargingStatus = 'Battery status: unknown.';
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -75,6 +77,27 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     setState(() {
       _batteryLevel = batteryLevel;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    const EventChannel eventChannel =
+    const EventChannel('samples.flutter.io/charging');
+    eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+  }
+
+  void _onEvent(Object event) {
+    setState(() {
+      _chargingStatus =
+      "Battery status: ${event == 'charging' ? '' : 'dis'}charging.";
+    });
+  }
+
+  void _onError(PlatformException error) {
+    setState(() {
+      _chargingStatus = 'Battery status: unknown.';
     });
   }
 
@@ -128,6 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Refresh'),
               onPressed: _getBatteryLevel,
             ),
+            new Text(_chargingStatus),
           ],
         ),
       ),
