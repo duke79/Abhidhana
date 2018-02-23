@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:admob/admob.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +49,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  String _batteryLevel = 'Battery level: unknown.';
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -55,7 +59,22 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
-      MethodChannel channel =>
+
+    });
+  }
+
+  Future<Null> _getBatteryLevel() async {
+    String batteryLevel;
+    const MethodChannel methodChannel =
+    const MethodChannel('samples.flutter.io/battery');
+    try {
+      final int result = await methodChannel.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level: $result%.';
+    } on PlatformException {
+      batteryLevel = 'Failed to get battery level.';
+    }
+    setState(() {
+      _batteryLevel = batteryLevel;
     });
   }
 
@@ -101,6 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             new Text(
               'times',
+            ),
+            new Text(
+                _batteryLevel, key: const Key('Battery level label')
+            ),
+            new RaisedButton(
+              child: const Text('Refresh'),
+              onPressed: _getBatteryLevel,
             ),
           ],
         ),
