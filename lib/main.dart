@@ -152,6 +152,22 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: _getBatteryLevel,
             ),
             new Text(_chargingStatus),
+            new RaisedButton(onPressed: (){
+              showModalBottomSheet<Null>(context: context, builder: (BuildContext context) {
+                return new Container(
+                    child: new Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: new Text('This is the modal bottom sheet. Click anywhere to dismiss.',
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontSize: 24.0
+                            )
+                        )
+                    )
+                );
+              });
+            }, child: const Text('showSheet'))
           ],
         ),
       ),
@@ -161,5 +177,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("aha! didChangeAppLifecycleState?");
   }
 }

@@ -22,7 +22,11 @@ public class MainActivity extends FlutterActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         new MethodChannel(getFlutterView(), BATTERY_CHANNEL).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
                     @Override
