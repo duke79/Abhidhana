@@ -61,7 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
-
     });
   }
 
@@ -103,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _controller = new TextEditingController();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -139,7 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             new Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .display1,
             ),
             new Text(
               'times',
@@ -152,29 +155,33 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: _getBatteryLevel,
             ),
             new Text(_chargingStatus),
-            new RaisedButton(onPressed: (){
-              showModalBottomSheet<Null>(context: context, builder: (BuildContext context) {
-                return new Container(
-                    child: new Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: new Text('This is the modal bottom sheet. Click anywhere to dismiss.',
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(
-                                color: Theme.of(context).accentColor,
-                                fontSize: 24.0
-                            )
-                        )
-                    )
-                );
-              });
-            }, child: const Text('showSheet'))
+            new RaisedButton(
+                onPressed: () {
+                  key.currentState.showBottomSheet<Null>((
+                      BuildContext context) {
+                    return new Text("fdsf");
+                  });
+                },
+                child: const Text('showSheet')
+            ),
+            new Stack(
+                alignment: const Alignment(1.0, 1.0),
+                children: <Widget>[
+                  new TextField(controller: _controller,),
+                  new FlatButton(
+                      onPressed: () {
+                        _controller.clear();
+                      },
+                      child: new Icon(Icons.clear))
+                ]
+            )
           ],
         ),
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: new Icon(Icons.add),
+        child: new Icon(Icons.clear),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
