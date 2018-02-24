@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:myapp/BatteryLevel.dart';
+import 'package:myapp/ChargingStatus.dart';
 import 'package:myapp/MyDrawer.dart';
 
 void main() => runApp(new MyApp());
@@ -49,8 +50,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String _batteryLevel = 'Battery level: unknown.';
-  String _chargingStatus = 'Battery status: unknown.';
 
   void _incrementCounter() {
     setState(() {
@@ -63,40 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<Null> _getBatteryLevel() async {
-    String batteryLevel;
-    const MethodChannel methodChannel =
-    const MethodChannel('samples.flutter.io/battery');
-    try {
-      final int result = await methodChannel.invokeMethod('getBatteryLevel');
-      batteryLevel = 'Battery level: $result%.';
-    } on PlatformException {
-      batteryLevel = 'Failed to get battery level.';
-    }
-    setState(() {
-      _batteryLevel = batteryLevel;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    const EventChannel eventChannel =
-    const EventChannel('samples.flutter.io/charging');
-    eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
-  }
-
-  void _onEvent(Object event) {
-    setState(() {
-      _chargingStatus =
-      "Battery status: ${event == 'charging' ? '' : 'dis'}charging.";
-    });
-  }
-
-  void _onError(PlatformException error) {
-    setState(() {
-      _chargingStatus = 'Battery status: unknown.';
-    });
   }
 
   @override
@@ -152,16 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
             new Text(
               'times',
             ),
-            new Text(
-                _batteryLevel, key
-                : const Key('Battery level label')
-            ),
-            new RaisedButton(
-              child: const Text('Refresh'),
-              onPressed: _getBatteryLevel,
-            ),
-            new
-            Text(_chargingStatus),
+            new BatteryLevel(),
+            new ChargingStatus(),
             new RaisedButton(
                 onPressed:
                     () {
