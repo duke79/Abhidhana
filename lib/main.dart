@@ -48,9 +48,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String _batteryLevel = 'Battery level: unknown.';
-
   String _chargingStatus = 'Battery status: unknown.';
 
   void _incrementCounter() {
@@ -110,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
+      key: _scaffoldKey,
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -157,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
             new Text(_chargingStatus),
             new RaisedButton(
                 onPressed: () {
-                  key.currentState.showBottomSheet<Null>((
+                  _scaffoldKey.currentState.showBottomSheet<Null>((
                       BuildContext context) {
                     return new Text("fdsf");
                   });
