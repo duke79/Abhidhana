@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:admob/admob.dart';
 import 'package:flutter/services.dart';
+import 'package:myapp/MyDrawer.dart';
 
 void main() => runApp(new MyApp());
 
@@ -115,10 +115,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title),
       ),
+      drawer: new Drawer(
+          child: new MyDrawer()
+      ),
       body: new Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: new Column(
+        child: new Column
+          (
           // Column is also layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -133,7 +137,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: <
+              Widget>[
             new Text(
               'You have pushed the button',
             ),
@@ -148,41 +153,57 @@ class _MyHomePageState extends State<MyHomePage> {
               'times',
             ),
             new Text(
-                _batteryLevel, key: const Key('Battery level label')
+                _batteryLevel, key
+                : const Key('Battery level label')
             ),
             new RaisedButton(
               child: const Text('Refresh'),
               onPressed: _getBatteryLevel,
             ),
-            new Text(_chargingStatus),
+            new
+            Text(_chargingStatus),
             new RaisedButton(
-                onPressed: () {
+                onPressed:
+                    () {
                   _scaffoldKey.currentState.showBottomSheet<Null>((
                       BuildContext context) {
                     return new Text("fdsf");
                   });
-                },
+                }
+                ,
                 child: const Text('showSheet')
             ),
             new Stack(
-                alignment: const Alignment(1.0, 1.0),
-                children: <Widget>[
+                alignment: const Alignment(
+                    1.0, 1.0),
+                children: <Widget>
+                [
                   new TextField(controller: _controller,),
                   new FlatButton(
                       onPressed: () {
                         _controller.clear();
-                      },
-                      child: new Icon(Icons.clear))
+                      }
+                      ,
+                      child: new Icon(Icons.clear)
+                  )
                 ]
             )
-          ],
-        ),
-      ),
-      floatingActionButton: new FloatingActionButton(
+          ]
+          ,
+        )
+        ,
+      )
+      ,
+      floatingActionButton
+          :
+      new
+      FloatingActionButton
+        (
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: new Icon(Icons.clear),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      )
+      , // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
