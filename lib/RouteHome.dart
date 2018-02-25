@@ -4,19 +4,8 @@ import 'package:myapp/ChargingStatus.dart';
 import 'package:myapp/MyDrawer.dart';
 import 'package:myapp/SearchView.dart';
 
-class RouteHome extends StatelessWidget {
-  final String title;
-
-  RouteHome({Key key, this.title}) :super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new MyHomePage(title: title,);
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class RouteHome extends StatefulWidget {
+  RouteHome({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -24,7 +13,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _MyHomePageState extends State<RouteHome>
     with SingleTickerProviderStateMixin {
   int _counter = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
