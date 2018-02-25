@@ -21,7 +21,10 @@ class RouteSearch extends StatelessWidget {
               width: mq.size.width / 1.6,
               child: new SearchView(
                 _controller,
-                focus: true,),
+                focusOnStart: true,
+                onSubmittedCB: (String text) => print(text),
+                onChangedCB: (String text) => print(text),
+              ),
             ),
           ],
         ),
