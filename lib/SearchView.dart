@@ -5,11 +5,13 @@ class SearchView extends StatefulWidget {
   bool focusOnStart;
   var onSubmittedCB;
   var onChangedCB;
+  TextStyle style;
 
   SearchView(this.controller, {
     this.focusOnStart = false,
     this.onSubmittedCB,
     this.onChangedCB,
+    this.style,
   });
 
   @override
@@ -19,6 +21,7 @@ class SearchView extends StatefulWidget {
         focusOnStart: this.focusOnStart,
         onSubmittedCB: this.onSubmittedCB,
         onChangedCB: this.onChangedCB,
+        style: this.style,
       );
 }
 
@@ -28,10 +31,15 @@ class SearchViewState extends State<SearchView> {
   FocusNode focusNode = new FocusNode();
   var onSubmittedCB;
   var onChangedCB;
+  TextStyle style;
 
 
-  SearchViewState(this.controller,
-      {this.focusOnStart, this.onSubmittedCB, this.onChangedCB});
+  SearchViewState(this.controller, {
+    this.focusOnStart,
+    this.onSubmittedCB,
+    this.onChangedCB,
+    this.style,
+  });
 
   @override
   void didUpdateWidget(SearchView oldWidget) {
@@ -48,9 +56,10 @@ class SearchViewState extends State<SearchView> {
         children: <Widget>[
           new TextField(
             controller: this.controller,
-            focusNode: focusNode,
-            onSubmitted: onSubmittedCB,
-            onChanged: onChangedCB,
+            focusNode: this.focusNode,
+            onSubmitted: this.onSubmittedCB,
+            onChanged: this.onChangedCB,
+            style: this.style,
           ),
           new FlatButton(
               onPressed: () => this.controller.clear(),

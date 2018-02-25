@@ -24,6 +24,10 @@ class RouteSearch extends StatelessWidget {
                 focusOnStart: true,
                 onSubmittedCB: (String text) => print(text),
                 onChangedCB: (String text) => print(text),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .title,
               ),
             ),
           ],
