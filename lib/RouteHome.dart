@@ -57,7 +57,7 @@ class _MyHomePageState extends State<RouteHome>
               child: new IgnorePointer (
                 child: new Container(
                   width: mq.size.width / 1.6,
-                  child: new SearchView(_controller),
+                  child: new SearchView(new SearchViewParams(_controller)),
                 ),
               ),
             ),

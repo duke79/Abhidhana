@@ -20,14 +20,19 @@ class RouteSearch extends StatelessWidget {
             new Container(
               width: mq.size.width / 1.6,
               child: new SearchView(
-                _controller,
-                focusOnStart: true,
-                onSubmittedCB: (String text) => print(text),
-                onChangedCB: (String text) => print(text),
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .title,
+                new SearchViewParams(
+                  _controller,
+                  focusOnStart: true,
+                  decoration: new InputDecoration(
+                    labelStyle: Theme
+                        .of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(color: Theme
+                        .of(context)
+                        .primaryColor),
+                  ),
+                ),
               ),
             ),
           ],

@@ -1,50 +1,42 @@
 import 'package:flutter/material.dart';
 
-class SearchView extends StatefulWidget {
+class SearchViewParams{
   TextEditingController controller;
   bool focusOnStart;
   var onSubmittedCB;
   var onChangedCB;
   TextStyle style;
+  InputDecoration decoration;
 
-  SearchView(this.controller, {
+  SearchViewParams(this.controller, {
     this.focusOnStart = false,
     this.onSubmittedCB,
     this.onChangedCB,
     this.style,
+    this.decoration,
   });
+}
+
+class SearchView extends StatefulWidget {
+  SearchViewParams params;
+
+  SearchView(this.params);
 
   @override
   SearchViewState createState() =>
-      new SearchViewState(
-        this.controller,
-        focusOnStart: this.focusOnStart,
-        onSubmittedCB: this.onSubmittedCB,
-        onChangedCB: this.onChangedCB,
-        style: this.style,
-      );
+      new SearchViewState(this.params);
 }
 
 class SearchViewState extends State<SearchView> {
-  TextEditingController controller;
-  bool focusOnStart = false;
   FocusNode focusNode = new FocusNode();
-  var onSubmittedCB;
-  var onChangedCB;
-  TextStyle style;
+  SearchViewParams params;
 
-
-  SearchViewState(this.controller, {
-    this.focusOnStart,
-    this.onSubmittedCB,
-    this.onChangedCB,
-    this.style,
-  });
+  SearchViewState(this.params);
 
   @override
   void didUpdateWidget(SearchView oldWidget) {
-    if (true == this.focusOnStart) {
-      focusOnStart = false;
+    if (true == params.focusOnStart) {
+      params.focusOnStart = false;
       FocusScope.of(context).requestFocus(focusNode);
     }
   }
@@ -55,14 +47,15 @@ class SearchViewState extends State<SearchView> {
         alignment: const Alignment(1.0, 1.0),
         children: <Widget>[
           new TextField(
-            controller: this.controller,
+            controller: params.controller,
             focusNode: this.focusNode,
-            onSubmitted: this.onSubmittedCB,
-            onChanged: this.onChangedCB,
-            style: this.style,
+            onSubmitted: params.onSubmittedCB,
+            onChanged: params.onChangedCB,
+            style: params.style,
+            decoration:params.decoration,
           ),
           new FlatButton(
-              onPressed: () => this.controller.clear(),
+              onPressed: () => params.controller.clear(),
               child: new Icon(Icons.clear)),
         ]
     );
