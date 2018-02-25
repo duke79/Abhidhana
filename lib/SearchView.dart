@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
 
-class SearchView extends StatelessWidget{
+class SearchView extends StatefulWidget {
+  TextEditingController controller;
+  bool focus;
 
-  final TextEditingController controller;
+  SearchView(this.controller, {this.focus = false});
 
-  SearchView(this.controller);
+  @override
+  SearchViewState createState() =>
+      new SearchViewState(this.controller, focus: this.focus);
+}
+
+class SearchViewState extends State<SearchView> {
+  TextEditingController controller;
+  bool focus = false;
+  FocusNode focusNode = new FocusNode();
+
+  SearchViewState(this.controller, {this.focus});
+
+  @override
+  void didUpdateWidget(SearchView oldWidget) {
+    if (true == this.focus)
+      FocusScope.of(context).requestFocus(focusNode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +31,7 @@ class SearchView extends StatelessWidget{
         children: <Widget>[
           new TextField(
             controller: this.controller,
+            focusNode: focusNode,
           ),
           new FlatButton(
               onPressed: () => this.controller.clear(),

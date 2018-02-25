@@ -4,7 +4,6 @@ import 'package:myapp/SearchView.dart';
 class RouteSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     MediaQueryData mq = MediaQuery.of(context);
     final TextEditingController _controller = new TextEditingController();
 
@@ -19,8 +18,10 @@ class RouteSearch extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             new Container(
-                width: mq.size.width / 1.6,
-                child: new SearchView(_controller),
+              width: mq.size.width / 1.6,
+              child: new SearchView(
+                _controller,
+                focus: true,),
             ),
           ],
         ),
