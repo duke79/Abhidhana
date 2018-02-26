@@ -20,13 +20,6 @@ class _MyHomePageState extends State<RouteHome>
 
   TabController _tabController;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-
   @override
   void initState() {
     _tabController = new TabController(vsync: this, length: 5);
@@ -34,17 +27,16 @@ class _MyHomePageState extends State<RouteHome>
 
   @override
   Widget build(BuildContext context) {
-
     MediaQueryData mq = MediaQuery.of(context);
     final TextEditingController _controller = new TextEditingController();
 
     return new Scaffold(
       key: _scaffoldKey,
-      appBar: new AppBar(
+      /*appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title),
-      ),
+        *//*title: new Text(widget.title),*//*
+      ),*/
       drawer: new Drawer(
           child: new MyDrawer()
       ),
@@ -56,23 +48,30 @@ class _MyHomePageState extends State<RouteHome>
               onTap: () => Navigator.of(context).pushNamed("/search"),
               child: new IgnorePointer (
                 child: new Container(
-                  width: mq.size.width / 1.6,
-                  child: new SearchView(new SearchViewParams(_controller)),
+                  margin: new EdgeInsets.only(
+                    top: mq.size.width / 20,
+                    bottom: mq.size.width / 20,
+                  ),
+                  width: mq.size.width / 2.6,
+                  child: new Hero(
+                    tag: "SearchViewTag",
+                    child: new SearchView(
+                      new SearchViewParams(
+                        _controller,
+                        decoration: new InputDecoration(
+                          labelStyle: Theme
+                              .of(context)
+                              .textTheme
+                              .caption
+                              .copyWith(color: Theme
+                              .of(context)
+                              .primaryColor),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            new Text(
-              'You have pushed the button',
-            ),
-            new Text(
-              '$_counter',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .display1,
-            ),
-            new Text(
-              'times',
             ),
             new BatteryLevel(),
             new ChargingStatus(),
@@ -87,28 +86,9 @@ class _MyHomePageState extends State<RouteHome>
               ,
               child: const Text('showSheet'),
             ),
-            new Stack(
-                alignment: const Alignment(
-                    1.0, 1.0),
-                children: <Widget>
-                [
-                  new TextField(controller: _controller,),
-                  new FlatButton(
-                    onPressed: () {
-                      _controller.clear();
-                    },
-                    child: new Icon(Icons.clear),
-                  )
-                ]
-            ),
             new TabPageSelector(controller: _tabController)
           ],
         ),
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.clear),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

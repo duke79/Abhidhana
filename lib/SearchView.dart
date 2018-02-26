@@ -35,15 +35,11 @@ class SearchViewState extends State<SearchView> {
 
   @override
   void didUpdateWidget(SearchView oldWidget) {
-    if (true == params.focusOnStart) {
-      params.focusOnStart = false;
-      FocusScope.of(context).requestFocus(focusNode);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Stack(
+    Widget ret = new Stack(
         alignment: const Alignment(1.0, 1.0),
         children: <Widget>[
           new TextField(
@@ -59,5 +55,11 @@ class SearchViewState extends State<SearchView> {
               child: new Icon(Icons.clear)),
         ]
     );
+
+    if (true == params.focusOnStart) {
+      params.focusOnStart = false;
+      FocusScope.of(context).requestFocus(focusNode);
+    }
+    return ret;
   }
 }

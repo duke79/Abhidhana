@@ -11,7 +11,7 @@ class RouteSearch extends StatelessWidget {
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: new Text("Search"),
+        /*title: new Text("Search"),*/
       ),
       body: new Center(
         child: new Column(
@@ -19,18 +19,21 @@ class RouteSearch extends StatelessWidget {
           children: <Widget>[
             new Container(
               width: mq.size.width / 1.6,
-              child: new SearchView(
-                new SearchViewParams(
-                  _controller,
-                  focusOnStart: true,
-                  decoration: new InputDecoration(
-                    labelStyle: Theme
-                        .of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(color: Theme
-                        .of(context)
-                        .primaryColor),
+              child: new Hero(
+                tag: "SearchViewTag",
+                child: new SearchView(
+                  new SearchViewParams(
+                    _controller,
+                    focusOnStart: true,
+                    decoration: new InputDecoration(
+                      labelStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .caption
+                          .copyWith(color: Theme
+                          .of(context)
+                          .primaryColor),
+                    ),
                   ),
                 ),
               ),
