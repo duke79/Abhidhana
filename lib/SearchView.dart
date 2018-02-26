@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SearchViewParams{
   TextEditingController controller;
-  bool focusOnStart;
+  FocusNode focusNode;
   var onSubmittedCB;
   var onChangedCB;
   TextStyle style;
   InputDecoration decoration;
 
   SearchViewParams(this.controller, {
-    this.focusOnStart = false,
+    this.focusNode,
     this.onSubmittedCB,
     this.onChangedCB,
     this.style,
@@ -20,7 +21,9 @@ class SearchViewParams{
 class SearchView extends StatefulWidget {
   SearchViewParams params;
 
-  SearchView(this.params);
+  SearchView(this.params){
+    print("SearchView:");
+  }
 
   @override
   SearchViewState createState() =>
@@ -28,7 +31,6 @@ class SearchView extends StatefulWidget {
 }
 
 class SearchViewState extends State<SearchView> {
-  FocusNode focusNode = new FocusNode();
   SearchViewParams params;
 
   SearchViewState(this.params);
@@ -44,7 +46,7 @@ class SearchViewState extends State<SearchView> {
         children: <Widget>[
           new TextField(
             controller: params.controller,
-            focusNode: this.focusNode,
+            focusNode: params.focusNode,
             onSubmitted: params.onSubmittedCB,
             onChanged: params.onChangedCB,
             style: params.style,
@@ -55,11 +57,6 @@ class SearchViewState extends State<SearchView> {
               child: new Icon(Icons.clear)),
         ]
     );
-
-    if (true == params.focusOnStart) {
-      params.focusOnStart = false;
-      FocusScope.of(context).requestFocus(focusNode);
-    }
     return ret;
   }
 }

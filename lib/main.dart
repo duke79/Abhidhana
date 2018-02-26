@@ -25,8 +25,17 @@ class MyApp extends StatelessWidget {
               settings: settings,
             );
           case '/search':
+            bool firstBuild = true;
+            FocusNode focusNode =  new FocusNode();
             return new MyCustomRoute(
-              builder: (_) => new RouteSearch(),
+              builder: (BuildContext context) {
+                Widget ret = new RouteSearch(focusNode: focusNode,);
+                if(true == firstBuild) {
+                  FocusScope.of(context).requestFocus(focusNode);
+                  firstBuild = false;
+                }
+                return ret;
+              },
               settings: settings,
             );
         }
