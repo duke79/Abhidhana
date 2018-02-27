@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/SearchView.dart';
+import 'package:myapp/SuggestionsView.dart';
 
 class RouteSearch extends StatelessWidget {
   FocusNode focusNode;
 
-  RouteSearch({Key key, this.focusNode}) : super(key : key);
+  RouteSearch({Key key, this.focusNode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,9 @@ class RouteSearch extends StatelessWidget {
         child: new Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
+            //SearchView
             new Container(
+              margin: new EdgeInsets.only(top: mq.size.width / 20,),
               width: mq.size.width / 1.6,
               child: new Hero(
                 tag: "SearchViewTag",
@@ -41,6 +44,14 @@ class RouteSearch extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            //SuggestionsView
+            new Container(
+                margin: new EdgeInsets.only(top: 20.0),
+                width: mq.size.width / 1.6,
+                child: new Center(
+                  child: new SuggestionsView(),
+                )
             ),
           ],
         ),

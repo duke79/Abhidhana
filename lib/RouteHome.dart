@@ -52,7 +52,7 @@ class _MyHomePageState extends State<RouteHome>
                     top: mq.size.width / 20,
                     bottom: mq.size.width / 20,
                   ),
-                  width: mq.size.width / 2.6,
+                  width: (mq.size.width * 0.6)/ 1.6,
                   child: new Hero(
                     tag: "SearchViewTag",
                     child: new SearchView(
