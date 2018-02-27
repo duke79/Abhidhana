@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/BatteryLevel.dart';
 import 'package:myapp/ChargingStatus.dart';
 import 'package:myapp/MyDrawer.dart';
+import 'package:myapp/Screen.dart';
 import 'package:myapp/SearchView.dart';
 
 class RouteHome extends StatefulWidget {
@@ -27,7 +28,7 @@ class _MyHomePageState extends State<RouteHome>
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData mq = MediaQuery.of(context);
+    Screen.updateScreen(context);
     final TextEditingController _controller = new TextEditingController();
 
     return new Scaffold(
@@ -49,10 +50,10 @@ class _MyHomePageState extends State<RouteHome>
               child: new IgnorePointer (
                 child: new Container(
                   margin: new EdgeInsets.only(
-                    top: mq.size.width / 20,
-                    bottom: mq.size.width / 20,
+                    top: Screen.width / 20,
+                    bottom: Screen.width / 20,
                   ),
-                  width: (mq.size.width * 0.6)/ 1.6,
+                  width: (Screen.width * 0.6)/ Screen.GOLDEN_RATIO,
                   child: new Hero(
                     tag: "SearchViewTag",
                     child: new SearchView(
