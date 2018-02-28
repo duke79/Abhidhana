@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/Screen.dart';
+import 'package:myapp/DatabaseServices.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SuggestionsView extends StatefulWidget {
 
@@ -8,8 +9,19 @@ class SuggestionsView extends StatefulWidget {
 }
 
 class SuggestionsViewState extends State<SuggestionsView> {
+
+  addSuggestions(Database db) async{
+    List<Map> list = await db.rawQuery('SELECT word FROM entries where UPPER(word) like UPPER(\"hello\")');
+    print(list);
+  }
+  
   @override
   Widget build(BuildContext context) {
+    DatabaseServices.loadDictionaryDB().then(
+      (Database db){
+        addSuggestions(db);
+      }
+    );
     return new Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
