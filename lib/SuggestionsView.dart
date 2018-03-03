@@ -9,12 +9,14 @@ class SuggestionsView extends StatefulWidget {
 }
 
 class SuggestionsViewState extends State<SuggestionsView> {
-  String selectWords = "select * from entries limit 0,100";
+  String select100Words = "select * from entries limit 0,100";
   String selectTables = "SELECT name FROM sqlite_master WHERE type=\'table\'";
+  String selectWordsStartingWith = "select * from entries where UPPER(word) like UPPER(\"INPUT_1%\")";
 
   addSuggestions(Database db) async{
-    debugPrint("Stuggestions: ");
-    List<Map> list = await db.rawQuery(selectWords);
+    String query = selectWordsStartingWith.replaceAll(new RegExp(r"INPUT_1"), "Hello");
+    debugPrint("Stuggestions: for query ");
+    List<Map> list = await db.rawQuery(query);
     debugPrint(list.length.toString());
     debugPrint(" : ");
     debugPrint(list.toString());
