@@ -12,7 +12,7 @@ class SuggestionsViewState extends State<SuggestionsView> {
 
   addSuggestions(Database db) async{
     List<Map> list = await db.rawQuery('SELECT word FROM entries where UPPER(word) like UPPER(\"hello\")');
-    print(list);
+    print("Stuggestions: "); print(list);
   }
   
   @override
