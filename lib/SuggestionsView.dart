@@ -23,14 +23,11 @@ class SuggestionsViewState extends State<SuggestionsView> {
     debugPrint(list.length.toString());
     debugPrint(" : ");
     setState(() {
-      while (list.iterator.moveNext()) {
-        Map elem = list.iterator.current;
-        if(null != elem) {
-          elem.values.forEach((dynamic value) {
-            suggestions.add(value.toString());
-          });
+      list.forEach((elem) {
+        if (null != elem) {
+          suggestions.add(elem["word"].toString());
         }
-      }
+      });
     }
     );
   }
