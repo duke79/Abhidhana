@@ -22,7 +22,7 @@ class SearchView extends StatefulWidget {
   SearchViewParams params;
 
   SearchView(this.params){
-    print("SearchView:");
+    debugPrint("SearchView:");
   }
 
   @override

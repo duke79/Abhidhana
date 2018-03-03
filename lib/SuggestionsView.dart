@@ -9,16 +9,23 @@ class SuggestionsView extends StatefulWidget {
 }
 
 class SuggestionsViewState extends State<SuggestionsView> {
+  String selectWords = "select * from entries limit 0,100";
+  String selectTables = "SELECT name FROM sqlite_master WHERE type=\'table\'";
 
   addSuggestions(Database db) async{
-    List<Map> list = await db.rawQuery('SELECT word FROM entries where UPPER(word) like UPPER(\"hello\")');
-    print("Stuggestions: "); print(list);
+    debugPrint("Stuggestions: ");
+    List<Map> list = await db.rawQuery(selectWords);
+    debugPrint(list.length.toString());
+    debugPrint(" : ");
+    debugPrint(list.toString());
   }
   
   @override
   Widget build(BuildContext context) {
+    debugPrint("Loading DB for Stuggestions: ");
     DatabaseServices.loadDictionaryDB().then(
       (Database db){
+        debugPrint("DB loaded, adding suggestions: ");
         addSuggestions(db);
       }
     );

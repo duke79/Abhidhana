@@ -96,6 +96,6 @@ class _MyHomePageState extends State<RouteHome>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("aha! didChangeAppLifecycleState?");
+    debugPrint("aha! didChangeAppLifecycleState?");
   }
 }
