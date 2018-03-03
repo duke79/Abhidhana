@@ -7,7 +7,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseServices{
+  static Database _db;
+
   static Future<Database> loadDictionaryDB() async {
+    if(null != _db) return _db;
+
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "Dictionary.db");
 
@@ -20,7 +24,7 @@ class DatabaseServices{
     await new File(path).writeAsBytes(bytes);
 
     // open the database
-    Database db = await openDatabase(path);
-    return db;
+    _db = await openDatabase(path);
+    return _db;
   }
 }
