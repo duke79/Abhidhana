@@ -13,7 +13,7 @@ class RouteSearch extends StatelessWidget {
     Screen.updateScreen(context);
     final TextEditingController _controller = new TextEditingController();
 
-    Widget sugWidget = new SuggestionsView();
+    SuggestionsView suggestions = new SuggestionsView();
 
     Widget ret = new Scaffold(
       /*appBar: new AppBar(
@@ -34,8 +34,8 @@ class RouteSearch extends StatelessWidget {
                 child: new SearchView(
                   new SearchViewParams(
                     _controller,
-                    onChangedCB: (value){
-                      sugWidget.prefix = value;
+                    onChangedCB: (value) {
+                      suggestions.prefix = value;
                     },
                     focusNode: focusNode,
                     decoration: new InputDecoration(
@@ -52,13 +52,7 @@ class RouteSearch extends StatelessWidget {
               ),
             ),
             //SuggestionsView
-            new Container(
-                margin: new EdgeInsets.only(top: 20.0),
-                width: Screen.width / Screen.GOLDEN_RATIO,
-                child: new Center(
-                  child: sugWidget,
-                )
-            ),
+            suggestions,
           ],
         ),
       ),

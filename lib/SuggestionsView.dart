@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:myapp/DatabaseServices.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,6 +32,8 @@ class SuggestionsViewState extends State<SuggestionsView> {
 
   Set<String> suggestions = new Set<String>();
   String _prefix;
+  GlobalKey<AnimatedListState> _keyAnimatedList = new GlobalKey<
+      AnimatedListState>();
 
 
   String get prefix => _prefix;
@@ -45,34 +50,37 @@ class SuggestionsViewState extends State<SuggestionsView> {
               new RegExp(r"INPUT_2"), "10");
           debugPrint("Stuggestions: for query ");
 
-          if(_prefix != value)
+          if (_prefix != value)
             return;
-          if(_prefix.length < 1){
-            setState((){
-              suggestions.clear();
-            });
+          if (_prefix.length < 1) {
+            suggestions.clear();
             return;
           }
           List<Map> list = await db.rawQuery(query);
-          if(_prefix != value)
+          if (_prefix != value)
             return;
-          if(_prefix.length < 1){
-            setState((){
-              suggestions.clear();
-            });
+          if (_prefix.length < 1) {
+            suggestions.clear();
             return;
           }
 
           debugPrint(list.length.toString());
           debugPrint(" : ");
-          setState(() {
-            suggestions.clear();
-            list.forEach((elem) {
-              if (null != elem) {
+          suggestions.clear();
+
+          int i = 0;
+          Map elem = list.elementAt(i);
+          while (elem != null && i < list.length) {
+            /*sleep(const Duration(milliseconds: 1000));*/
+            if (null != elem) {
+              AnimatedListState listState = _keyAnimatedList.currentState;
+              if (null != listState) {
+                listState.insertItem(i);
                 suggestions.add(elem["word"].toString());
               }
-            });
-          });
+            }
+            elem = list.elementAt(i++);
+          };
         }
     );
   }
@@ -80,34 +88,22 @@ class SuggestionsViewState extends State<SuggestionsView> {
   @override
   Widget build(BuildContext context) {
     debugPrint("Loading DB for Stuggestions: ");
-    List<Widget> suggestionsWidgets = new List();
-    suggestions.forEach((s) {
-      Widget widget = new Container(
-        padding: const EdgeInsets.only(bottom: 10.0),
-        decoration: new BoxDecoration(
-            border: suggestions.elementAt(suggestions.length-1) == s
-                ? null : new Border(
-                bottom: new BorderSide(
-                    width: 0.3,
-                ),
-            ),
-        ),
-        margin: new EdgeInsets.only(bottom: 10.0,),
-        child: new Row(
-          children: <Widget>[
-            new Text(s.toString().toLowerCase(),
-              style: new TextStyle(fontSize: 20.0),
-            ),
-          ],
-        ),
-      );
-      suggestionsWidgets.add(widget);
-    });
-    return new Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: suggestionsWidgets,
-    );
+    return new Expanded(
+        child: new AnimatedList(
+            key: _keyAnimatedList,
+            itemBuilder: (BuildContext context, int index,
+                Animation<double> animation) {
+              if (index >= suggestions.length)
+                return null;
+              return new Row(
+                children: <Widget>[
+                  new Text(
+                    suggestions.elementAt(index).toString().toLowerCase(),
+                    style: new TextStyle(fontSize: 20.0),
+                  ),
+                ],
+              );
+            }
+        ));
   }
 }
