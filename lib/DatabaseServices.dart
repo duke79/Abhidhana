@@ -8,12 +8,20 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseServices{
   static Database _db;
+  static int VERSION = 1;
 
   static Future<Database> loadDictionaryDB() async {
     if(null != _db) return _db;
 
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "Dictionary.db");
+
+    // open the database
+    _db = await openDatabase(path);
+    if(null != _db){
+      if(await _db.getVersion() == VERSION)
+        return _db;
+    }
 
     // delete existing if any
     await deleteDatabase(path);
@@ -25,6 +33,7 @@ class DatabaseServices{
 
     // open the database
     _db = await openDatabase(path);
+    _db.setVersion(VERSION);
     return _db;
   }
 }

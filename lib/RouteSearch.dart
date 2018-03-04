@@ -35,7 +35,7 @@ class RouteSearch extends StatelessWidget {
                   new SearchViewParams(
                     _controller,
                     onChangedCB: (value){
-                      sugWidget.suggestFor(value);
+                      sugWidget.prefix = value;
                     },
                     focusNode: focusNode,
                     decoration: new InputDecoration(
