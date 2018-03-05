@@ -19,10 +19,8 @@ class SuggestionsViewState extends State<SuggestionsView> {
   /*Methods*/
   Future _updateSuggestions() async {
     debugPrint("Loading DB for Stuggestions: ");
-    var db = await DatabaseServices.db;
-    debugPrint("DB loaded, adding suggestions: ");
 
-    List<Map> list = await db.rawQuery(_query);
+    List<Map> list = await (await DatabaseServices.db).rawQuery(_query);
 
     debugPrint(list.length.toString());
     debugPrint(" : ");

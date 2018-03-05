@@ -8,9 +8,14 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseServices{
   static Database _db;
+  static Future<Database> _dbFuture;
   static int VERSION = 1;
 
-  static get db => database();
+  static get db {
+    if(null == _dbFuture)
+      _dbFuture = database();
+    return _dbFuture;
+  }
 
   static Future<Database> database() async {
     if(null != _db) return _db;
