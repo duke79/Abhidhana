@@ -37,10 +37,11 @@ class SuggestionsViewState extends State<SuggestionsView> {
 
   void _addSuggestion(Map elem, int i) async {
     /*sleep(new Duration(milliseconds: 300 * i));*/
-    AnimatedListState listState = _keyAnimatedList.currentState;
-    if (null != listState) {
+    if (null != _keyAnimatedList.currentState) {
       _suggestions.add(elem["word"].toString());
-      listState.insertItem(i);
+      _keyAnimatedList.currentState.setState(() {//Todo: Does setState has any impact?
+        _keyAnimatedList.currentState.insertItem(i);
+      });
       /*setState(()=>null);*/
     }
   }
@@ -81,6 +82,13 @@ class SuggestionsViewState extends State<SuggestionsView> {
 
   set prefix(String value) {
     _prefix = value;
+    if (null != _keyAnimatedList.currentState) {
+      for(int i=_suggestions.length-1;i>=0;i--){
+        _keyAnimatedList.currentState.removeItem(i,(BuildContext context, Animation<double> animation) {
+          new Text("I am gone");
+        });
+      }
+    }
     _suggestions.clear();
     if (_prefix.length < 1) return;
 
