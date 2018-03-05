@@ -10,7 +10,9 @@ class DatabaseServices{
   static Database _db;
   static int VERSION = 1;
 
-  static Future<Database> loadDictionaryDB() async {
+  static get db => database();
+
+  static Future<Database> database() async {
     if(null != _db) return _db;
 
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
