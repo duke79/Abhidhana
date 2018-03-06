@@ -10,9 +10,8 @@ void main() {
   File file = new File("assets/words_list.txt");
   file.readAsLines().then((lines) {
     Trie trie = new Trie(lines);
-    if(trie.contains("Prefix"))
-      print("yes");
-    else
-      print("no");
+    trie.suggestions("Pre").forEach((suggestion){
+      print(suggestion);
+    });
   });
 }

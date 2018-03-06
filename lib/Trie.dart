@@ -74,6 +74,16 @@ class TrieNode {
   void setTerminates(bool t) {
     _terminates = t;
   }
+
+  List<String> suggestions(String prefix) {
+    List<String> list = new List();
+    if(terminates)
+      list.add(prefix+_character);
+    _children.forEach((child){
+      list.addAll(child.suggestions(prefix+_character));
+    });
+    return list;
+  }
 }
 
 /*
@@ -114,5 +124,18 @@ class Trie {
 
   bool contains(String prefix) {
     return containsExact(prefix, false);
+  }
+
+  List<String> suggestions(String prefix, {int length}){//Todo: Use length
+    List<String> list = new List();
+    TrieNode lastNode = root;
+    int i = 0;
+    for (i = 0; i < prefix.length; i++) {
+      lastNode = lastNode.getChild(prefix[i]);
+      if (lastNode == null) {
+        return list;
+      }
+    }
+    return lastNode.suggestions(prefix);
   }
 }
