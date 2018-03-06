@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myapp/DatabaseServices.dart';
+import 'package:myapp/Trie.dart';
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SuggestionsViewState extends State<SuggestionsView> {
@@ -43,6 +46,20 @@ class SuggestionsViewState extends State<SuggestionsView> {
         _keyAnimatedList.currentState.insertItem(i);
       });
       /*setState(()=>null);*/
+    }
+  }
+
+  void _updateSuggestionsFromTrie() async{
+    String data = await rootBundle.loadString(join("assets", "words_list.txt"));
+    List words = data.split("\n");
+    Trie trie = new Trie(words);
+    List suggestions = trie.suggestions(prefix);
+    int i = 0;
+    for(i=0;i < suggestions.length;i++) {
+      _suggestions.add(suggestions.elementAt(i));
+      _keyAnimatedList.currentState.setState(() {//Todo: Does setState has any impact?
+        _keyAnimatedList.currentState.insertItem(i);
+      });
     }
   }
 
@@ -92,7 +109,8 @@ class SuggestionsViewState extends State<SuggestionsView> {
     _suggestions.clear();
     if (_prefix.length < 1) return;
 
-    _updateSuggestions();
+    //_updateSuggestions();
+    _updateSuggestionsFromTrie();
   }
 }
 
