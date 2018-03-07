@@ -13,13 +13,13 @@ class DatabaseServices {
   static Future<Trie> _trieFuture;
   static int VERSION = 1;
 
-  static get db {
+  static Future<Database> get db {
     if (null == _dbFuture)
       _dbFuture = database();
     return _dbFuture;
   }
 
-  static get trie {
+  static Future<Trie> get trie {
     if (null == _trieFuture)
       _trieFuture = _trie();
     return _trieFuture;

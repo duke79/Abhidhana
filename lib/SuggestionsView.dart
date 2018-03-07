@@ -50,7 +50,7 @@ class SuggestionsViewState extends State<SuggestionsView> {
   }
 
   void _updateSuggestionsFromTrie() async{
-    List suggestions = (await DatabaseServices.trie).suggestions(prefix);
+    List suggestions = (await DatabaseServices.trie).suggestions(prefix,length: 5);
     int i = 0;
     for(i=0;(i < suggestions.length) && (i<10);i++) {
       _suggestions.add(suggestions.elementAt(i));
