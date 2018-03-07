@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/DatabaseServices.dart';
 import 'package:myapp/MyCustomRoute.dart';
 import 'package:myapp/RouteHome.dart';
 import 'package:myapp/RouteSearch.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  //Run app
+  runApp(new MyApp());
+  //Cache heavy data
+  DatabaseServices.trie;
+}
 
 class MyApp extends StatelessWidget {
   @override

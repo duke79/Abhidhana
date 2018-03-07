@@ -98,11 +98,17 @@ class Trie {
    * Takes a list of strings as an argument, and constructs a trie that
    * stores these strings.
    */
-  Trie(List<String> list) {
+  Trie({List<String> list}) {
     root = new TrieNode();
-    for (String word in list) {
-      root.addWord(word);
+    if(null != list) {
+      for (String word in list) {
+        root.addWord(word);
+      }
     }
+  }
+
+  addWord(String word){
+    root.addWord(word);
   }
 
   /*

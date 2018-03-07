@@ -50,12 +50,9 @@ class SuggestionsViewState extends State<SuggestionsView> {
   }
 
   void _updateSuggestionsFromTrie() async{
-    String data = await rootBundle.loadString(join("assets", "words_list.txt"));
-    List words = data.split("\n");
-    Trie trie = new Trie(words);
-    List suggestions = trie.suggestions(prefix);
+    List suggestions = (await DatabaseServices.trie).suggestions(prefix);
     int i = 0;
-    for(i=0;i < suggestions.length;i++) {
+    for(i=0;(i < suggestions.length) && (i<10);i++) {
       _suggestions.add(suggestions.elementAt(i));
       _keyAnimatedList.currentState.setState(() {//Todo: Does setState has any impact?
         _keyAnimatedList.currentState.insertItem(i);
