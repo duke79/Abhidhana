@@ -1,12 +1,5 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:myapp/DatabaseServices.dart';
-import 'package:myapp/Trie.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 class SuggestionsViewState extends State<SuggestionsView> {
 
@@ -20,44 +13,17 @@ class SuggestionsViewState extends State<SuggestionsView> {
   }
 
   /*Methods*/
-  Future _updateSuggestions() async {
-    debugPrint("Loading DB for Stuggestions: ");
-
-    List<Map> list = await (await DatabaseServices.db).rawQuery(_query);
-
-    debugPrint(list.length.toString());
-    debugPrint(" : ");
-
-    int i = 0;
-    Map elem = list.elementAt(i);
-    while (elem != null && i < list.length) {
-      if (null != elem) {
-        _addSuggestion(elem, i);
+  void _updateSuggestions() async{
+    DatabaseServices.trie.then((trie){
+      List<String> suggestions = trie.suggestions(prefix,length: 5);
+      int i = 0;
+      for(i=0;(i < suggestions.length) && (i<10);i++) {
+        _suggestions.add(suggestions.elementAt(i));
+        _keyAnimatedList.currentState.setState(() {//Todo: Does setState has any impact?
+          _keyAnimatedList.currentState.insertItem(i);
+        });
       }
-      elem = list.elementAt(i++);
-    };
-  }
-
-  void _addSuggestion(Map elem, int i) async {
-    /*sleep(new Duration(milliseconds: 300 * i));*/
-    if (null != _keyAnimatedList.currentState) {
-      _suggestions.add(elem["word"].toString());
-      _keyAnimatedList.currentState.setState(() {//Todo: Does setState has any impact?
-        _keyAnimatedList.currentState.insertItem(i);
-      });
-      /*setState(()=>null);*/
-    }
-  }
-
-  void _updateSuggestionsFromTrie() async{
-    List suggestions = (await DatabaseServices.trie).suggestions(prefix,length: 5);
-    int i = 0;
-    for(i=0;(i < suggestions.length) && (i<10);i++) {
-      _suggestions.add(suggestions.elementAt(i));
-      _keyAnimatedList.currentState.setState(() {//Todo: Does setState has any impact?
-        _keyAnimatedList.currentState.insertItem(i);
-      });
-    }
+    });
   }
 
   Widget _buildItem(BuildContext context, int index,
@@ -82,7 +48,7 @@ class SuggestionsViewState extends State<SuggestionsView> {
   /*Local fields*/
   Set<String> _suggestions = new Set<String>();
   String _prefix;
-  GlobalKey<AnimatedListState> _keyAnimatedList = new GlobalKey<
+  static final GlobalKey<AnimatedListState> _keyAnimatedList = new GlobalKey<
       AnimatedListState>();
 
   String get _query {
@@ -107,7 +73,7 @@ class SuggestionsViewState extends State<SuggestionsView> {
     if (_prefix.length < 1) return;
 
     //_updateSuggestions();
-    _updateSuggestionsFromTrie();
+    _updateSuggestions();
   }
 }
 
