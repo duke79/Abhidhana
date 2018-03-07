@@ -71,16 +71,22 @@ class TrieNode {
   }
 
   bool get terminates => _terminates;
+
   void setTerminates(bool t) {
     _terminates = t;
   }
 
-  List<String> suggestions(String prefix) {
-    List<String> list = new List();
-    if(terminates)
-      list.add(prefix+_character);
-    _children.forEach((child){
-      list.addAll(child.suggestions(prefix+_character));
+  List<String> suggestions(String prefix,{int length, List<String> list}) {
+    if(null == list)
+      list = new List();
+    if(null != length){
+      if(list.length  >= length)
+        return list;
+    }
+    if (terminates)
+      list.add(prefix + _character);
+    _children.forEach((child) {
+      child.suggestions(prefix + _character, length: length, list: list);
     });
     return list;
   }
@@ -100,14 +106,14 @@ class Trie {
    */
   Trie({List<String> list}) {
     root = new TrieNode();
-    if(null != list) {
+    if (null != list) {
       for (String word in list) {
         root.addWord(word);
       }
     }
   }
 
-  addWord(String word){
+  addWord(String word) {
     root.addWord(word);
   }
 
@@ -132,7 +138,8 @@ class Trie {
     return containsExact(prefix, false);
   }
 
-  List<String> suggestions(String prefix, {int length}){//Todo: Use length
+  List<String> suggestions(String prefix, {int length}) {
+    //Todo: Use length
     List<String> list = new List();
     TrieNode lastNode = root;
     int i = 0;
@@ -142,6 +149,6 @@ class Trie {
         return list;
       }
     }
-    return lastNode.suggestions(prefix);
+    return lastNode.suggestions(prefix.substring(0, prefix.length - 1), length: length, list: list);
   }
 }

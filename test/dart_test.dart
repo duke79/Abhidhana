@@ -10,7 +10,7 @@ void main() {
   File file = new File("assets/words_list.txt");
   file.readAsLines().then((lines) {
     Trie trie = new Trie(list: lines);
-    trie.suggestions("Pre").forEach((suggestion) {
+    trie.suggestions("Speci",length: 3).forEach((suggestion) {
       print(suggestion);
     });
   });
