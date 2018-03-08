@@ -12,7 +12,10 @@ import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+
+import static java.lang.Thread.sleep;
 
 public class MainActivity extends FlutterActivity {
     private static final String BATTERY_CHANNEL = "samples.flutter.io/battery";
@@ -20,8 +23,15 @@ public class MainActivity extends FlutterActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final PluginRegistry pluginRegistry = this;
         super.onCreate(savedInstanceState);
-        GeneratedPluginRegistrant.registerWith(this);
+        GeneratedPluginRegistrant.registerWith(pluginRegistry);
+        try {
+            //2000 is the lowest safe value so far
+            sleep(2000); //Elongate splash screen, to allow data (suggestions Trie in this case) initialization
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
