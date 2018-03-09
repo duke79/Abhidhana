@@ -3,9 +3,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@android:color/white" />
 
-    <item>
+    <item
+        android:width="256dp"
+        android:height="256dp"
+        android:gravity="center">
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_launcher_web_hi_res_512" />
     </item>
 </layer-list>
