@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/DatabaseServices.dart';
-import 'package:myapp/MyCustomRoute.dart';
-import 'package:myapp/RouteHome.dart';
-import 'package:myapp/RouteSearch.dart';
+import 'package:myapp/data/DatabaseServices.dart';
+import 'package:myapp/routes/MyCustomRoute.dart';
+import 'package:myapp/routes/Home.dart';
+import 'package:myapp/routes/Search.dart';
 
 void main() {
   //Run app
@@ -19,15 +19,11 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      /*routes: <String, WidgetBuilder>{
-        "/": (_) => new RouteHome(title: 'Flutter Demo Home Page'),
-        "/search": (_) => new RouteSearch(),
-      },*/
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/' :
             return new MyCustomRoute(
-              builder: (_) => new RouteHome(title: 'Flutter Demo Home Page'),
+              builder: (_) => new Home(title: 'Flutter Demo Home Page'),
               settings: settings,
             );
           case '/search':
@@ -35,7 +31,7 @@ class MyApp extends StatelessWidget {
             FocusNode focusNode =  new FocusNode();
             return new MyCustomRoute(
               builder: (BuildContext context) {
-                Widget ret = new RouteSearch(focusNode: focusNode,);
+                Widget ret = new Search(focusNode: focusNode,);
                 if(true == firstBuild) {
                   FocusScope.of(context).requestFocus(focusNode);
                   firstBuild = false;

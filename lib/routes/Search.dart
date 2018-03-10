@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/Screen.dart';
-import 'package:myapp/SearchView.dart';
-import 'package:myapp/SuggestionsView.dart';
+import 'package:myapp/model/Screen.dart';
+import 'package:myapp/widgets/SearchBar.dart';
+import 'package:myapp/widgets/Suggestions.dart';
 
-class RouteSearch extends StatelessWidget {
+class Search extends StatelessWidget {
 
-  RouteSearch({Key key, this.focusNode}) : super(key: key);
+  Search({Key key, this.focusNode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class RouteSearch extends StatelessWidget {
       width: Screen.width / Screen.GOLDEN_RATIO,
       child: new Hero(
         tag: "SearchViewTag",
-        child: new SearchView(
+        child: new SearchBar(
           new SearchViewParams(
             _controller,
             onChangedCB: (value) {
@@ -63,7 +63,7 @@ class RouteSearch extends StatelessWidget {
 
   /*Local fields*/
   final TextEditingController _controller = new TextEditingController();
-  static final GlobalKey<SuggestionsViewState> _keySuggestions = new GlobalKey<SuggestionsViewState>();
+  static final GlobalKey<Suggestions> _keySuggestions = new GlobalKey<Suggestions>();
 
   /*Public fields*/
   FocusNode focusNode;

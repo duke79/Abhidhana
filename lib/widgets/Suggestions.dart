@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/DatabaseServices.dart';
+import 'package:myapp/data/DatabaseServices.dart';
 
-class SuggestionsViewState extends State<SuggestionsView> {
+class Suggestions extends State<SuggestionsView> {
 
   @override
   Widget build(BuildContext context) {
@@ -81,5 +81,5 @@ class SuggestionsView extends StatefulWidget {
   SuggestionsView({Key key}) :super(key: key);
 
   @override
-  SuggestionsViewState createState() => new SuggestionsViewState();
+  Suggestions createState() => new Suggestions();
 }

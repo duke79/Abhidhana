@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/BatteryLevel.dart';
-import 'package:myapp/ChargingStatus.dart';
-import 'package:myapp/MyDrawer.dart';
-import 'package:myapp/Screen.dart';
-import 'package:myapp/SearchView.dart';
+import 'package:myapp/widgets/BatteryLevel.dart';
+import 'package:myapp/widgets/ChargingStatus.dart';
+import 'package:myapp/widgets/MyDrawer.dart';
+import 'package:myapp/model/Screen.dart';
+import 'package:myapp/widgets/SearchBar.dart';
 
-class RouteHome extends StatefulWidget {
-  RouteHome({Key key, this.title}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -14,11 +14,10 @@ class RouteHome extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<RouteHome>
+class _MyHomePageState extends State<Home>
     with SingleTickerProviderStateMixin {
-  int _counter = 0;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TabController _tabController;
 
   @override
@@ -33,11 +32,11 @@ class _MyHomePageState extends State<RouteHome>
 
     return new Scaffold(
       key: _scaffoldKey,
-      /*appBar: new AppBar(
+      appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        *//*title: new Text(widget.title),*//*
-      ),*/
+        title: new Text(widget.title),
+      ),
       drawer: new Drawer(
           child: new MyDrawer()
       ),
@@ -56,7 +55,7 @@ class _MyHomePageState extends State<RouteHome>
                   width: (Screen.width * 0.6)/ Screen.GOLDEN_RATIO,
                   child: new Hero(
                     tag: "SearchViewTag",
-                    child: new SearchView(
+                    child: new SearchBar(
                       new SearchViewParams(
                         _controller,
                         decoration: new InputDecoration(

@@ -18,10 +18,10 @@ class SearchViewParams{
   });
 }
 
-class SearchView extends StatefulWidget {
+class SearchBar extends StatefulWidget {
   SearchViewParams params;
 
-  SearchView(this.params){
+  SearchBar(this.params){
     debugPrint("SearchView:");
   }
 
@@ -30,13 +30,13 @@ class SearchView extends StatefulWidget {
       new SearchViewState(this.params);
 }
 
-class SearchViewState extends State<SearchView> {
+class SearchViewState extends State<SearchBar> {
   SearchViewParams params;
 
   SearchViewState(this.params);
 
   @override
-  void didUpdateWidget(SearchView oldWidget) {
+  void didUpdateWidget(SearchBar oldWidget) {
   }
 
   @override

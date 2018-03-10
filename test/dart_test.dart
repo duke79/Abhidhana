@@ -4,7 +4,7 @@
 
 import 'dart:io';
 
-import 'package:myapp/Trie.dart';
+import 'package:myapp/model/Trie.dart';
 
 void main() {
   File file = new File("assets/words_list.txt");
