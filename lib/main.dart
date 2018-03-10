@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/data/DatabaseServices.dart';
+import 'package:myapp/model/MyLocale.dart';
 import 'package:myapp/routes/MyCustomRoute.dart';
 import 'package:myapp/routes/Home.dart';
 import 'package:myapp/routes/Search.dart';
@@ -19,20 +20,34 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
+      supportedLocales: [
+        const Locale('en',), //English
+        const Locale('es'), //Spanish
+      ],
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+/*        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,*/
+        DefaultMaterialLocalizations.delegate,
+        const MyLocalizationDelegate(),
+      ],
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/' :
             return new MyCustomRoute(
-              builder: (_) => new Home(title: 'Flutter Demo Home Page'),
+              builder: (_) =>
+              new Home(title: MyLocale
+                  .of(context)
+                  .title /*'Flutter Demo Home Page'*/),
               settings: settings,
             );
           case '/search':
             bool firstBuild = true;
-            FocusNode focusNode =  new FocusNode();
+            FocusNode focusNode = new FocusNode();
             return new MyCustomRoute(
               builder: (BuildContext context) {
                 Widget ret = new Search(focusNode: focusNode,);
-                if(true == firstBuild) {
+                if (true == firstBuild) {
                   FocusScope.of(context).requestFocus(focusNode);
                   firstBuild = false;
                 }
