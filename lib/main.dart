@@ -7,22 +7,14 @@ import 'package:myapp/routes/Search.dart';
 
 void main() {
   //Run app
-  runApp(new MyApp());
-  //Cache heavy data
-  DatabaseServices.trie;
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
+  runApp(new MaterialApp(
       title: 'Vilokan Dictionary',
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
       supportedLocales: [
-        const Locale('en',), //English
-        const Locale('es'), //Spanish
+        const Locale('en', ''), //English
+        const Locale('es', ''), //Spanish
       ],
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
@@ -35,7 +27,7 @@ class MyApp extends StatelessWidget {
         switch (settings.name) {
           case '/' :
             return new MyCustomRoute(
-              builder: (_) =>
+              builder: (context) =>
               new Home(title: MyLocale
                   .of(context)
                   .title /*'Flutter Demo Home Page'*/),
@@ -57,6 +49,7 @@ class MyApp extends StatelessWidget {
             );
         }
       },
-    );
-  }
+    ),);
+  //Cache heavy data
+  DatabaseServices.trie;
 }

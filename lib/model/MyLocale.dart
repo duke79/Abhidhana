@@ -38,7 +38,9 @@ class MyLocalizationDelegate extends LocalizationsDelegate<MyLocale> {
 
   @override
   Future<MyLocale> load(Locale locale) {
-    return new SynchronousFuture<MyLocale>(new MyLocale(locale));
+    return new SynchronousFuture<MyLocale>(
+        new MyLocale(locale)
+    );
   }
 
   @override
