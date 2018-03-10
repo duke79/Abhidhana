@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:myapp/main.dart';
+import 'package:myapp/widgets/SearchBar.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -25,5 +26,15 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+  });
+
+  testWidgets("Test myApp", (WidgetTester tester) async {
+    await tester.pumpWidget(myApp());
+
+    // Verify that SearchBar exists
+    expect(find.byElementType(SearchBar), findsOneWidget);
+
+    // Tap on SearchBar
+    await tester.tap(find.byElementType(SearchBar));
   });
 }
