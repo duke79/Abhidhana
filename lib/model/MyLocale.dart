@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:myapp/data/Strings.dart';
 
 class MyLocale {
   MyLocale(this.locale);
@@ -14,15 +15,17 @@ class MyLocale {
 
   static Map<String, Map<String, String>> _localizedValues = {
     'en': {
-      'title': 'Hello World',
+      Strings.localeKey_title: 'Vilokan Dictionary',
+      Strings.localeKey_sheet: 'bottomSheet',
+      Strings.localeKey_showSheet: 'showSheet',
     },
     'es': {
-      'title': 'Hola Mundo',
+      Strings.localeKey_title: 'Vilokan Dictionary',
     },
   };
 
-  String get title {
-    return _localizedValues[locale.languageCode]['title'];
+  String value(key) {
+    return _localizedValues[locale.languageCode][key];
   }
 }
 
