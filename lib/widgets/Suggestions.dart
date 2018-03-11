@@ -54,11 +54,6 @@ class Suggestions extends State<SuggestionsView> {
   static final GlobalKey<AnimatedListState> _keyAnimatedList = new GlobalKey<
       AnimatedListState>();
 
-  String get _query {
-    return Strings.SQL_SELECT_WORDS_STARTING_WITH.replaceAll(
-        new RegExp(Strings.SQL_VAR_INPUT1), prefix).replaceAll(
-        new RegExp(Strings.SQL_VAR_INPUT2), Strings.SQL_VAR_LIMIT);
-  }
 
   /*Public fields*/
   String get prefix => _prefix;

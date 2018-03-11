@@ -43,6 +43,8 @@ class Strings {
   // ignore: non_constant_identifier_names
   static get SQL_SELECT_WORDS_STARTING_WITH => "select * from entries where UPPER(word) like UPPER(\"INPUT_1%\") limit INPUT_2";
   // ignore: non_constant_identifier_names
+  static get SQL_SELECT_WORD_DEFINITION => "select * from entries where UPPER(word) = UPPER(\"INPUT_1\")";
+  // ignore: non_constant_identifier_names
   static get SQL_VAR_INPUT1 => r"INPUT_1";
   // ignore: non_constant_identifier_names
   static get SQL_VAR_INPUT2 => r"INPUT_2";
