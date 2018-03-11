@@ -2,20 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:myapp/data/DatabaseServices.dart';
-import 'package:myapp/model/MyLocale.dart';
 import 'package:myapp/data/Strings.dart';
-import 'package:myapp/widgets/BatteryLevel.dart';
-import 'package:myapp/widgets/ChargingStatus.dart';
-import 'package:myapp/widgets/MyDrawer.dart';
-import 'package:myapp/model/Screen.dart';
-import 'package:myapp/widgets/SearchBar.dart';
 
 class ResultState extends State<Result> {
-  String _definition = "Loading...";
+  String _definition = "";
+
+  @override
+  void initState() {
+    _loadDefinition();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    _loadDefinition();
     return new Scaffold(
       body: new Container(
         margin: const EdgeInsets.only(top: 200.0),
@@ -35,7 +34,8 @@ class ResultState extends State<Result> {
               new AnimatedAlign(
                 alignment: Alignment.center,
                 duration: const Duration(seconds: 1),
-                child: new Text(
+                child: _definition=="" ? new CircularProgressIndicator()
+                    : new Text(
                   _definition,
                   textScaleFactor: 2.0,
                 ),
