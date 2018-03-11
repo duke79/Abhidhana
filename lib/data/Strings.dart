@@ -30,6 +30,7 @@ class Strings {
   static const route_home = "/";
   // ignore: non_constant_identifier_names
   static const route_search = "/search";
+  static const route_result = "/result";
 
 
 

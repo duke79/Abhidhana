@@ -13,7 +13,7 @@ void main() {
   DatabaseServices.trie;
 }
 
-Widget myApp(){
+Widget myApp() {
   return new MaterialApp(
     title: Strings.app_title,
     theme: new ThemeData(
@@ -31,7 +31,8 @@ Widget myApp(){
       const MyLocalizationDelegate(),
     ],
     onGenerateRoute: (RouteSettings settings) {
-      switch (settings.name) {
+      var path = settings.name.split("/");
+      switch ("/"+path[1]) {
         case Strings.route_home :
           return new MyCustomRoute(
             builder: (context) =>
@@ -52,6 +53,12 @@ Widget myApp(){
               }
               return ret;
             },
+            settings: settings,
+          );
+        case Strings.route_result :
+          return new MyCustomRoute(
+            builder: (context) =>
+            new Home(title: path[2]),
             settings: settings,
           );
       }
