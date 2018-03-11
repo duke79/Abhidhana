@@ -7,6 +7,33 @@ import 'package:myapp/widgets/MyDrawer.dart';
 import 'package:myapp/model/Screen.dart';
 import 'package:myapp/widgets/SearchBar.dart';
 
+class ResultState extends State<Result> {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Container(
+        margin: const EdgeInsets.only(top: 200.0),
+        alignment: const AlignmentDirectional(1.0, 1.0),
+        child: new Center(
+          child: new Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+                  new AnimatedAlign(
+                    alignment: Alignment.center,
+                    duration: const Duration(seconds: 1),
+                    child: new Text(
+                      widget.word,
+                      textScaleFactor: 3.0,
+                    ),
+                  ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class Result extends StatefulWidget {
   Result({Key key, this.word}) : super(key: key);
 
@@ -14,41 +41,4 @@ class Result extends StatefulWidget {
 
   @override
   ResultState createState() => new ResultState();
-}
-
-class ResultState extends State<Result> {
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-
-  @override
-  Widget build(BuildContext context) {
-    Screen.updateScreen(context);
-    final TextEditingController _controller = new TextEditingController();
-
-    return new Scaffold(
-      key: _scaffoldKey,
-      appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.word),
-      ),
-      drawer: new Drawer(
-          child: new MyDrawer()
-      ),
-      body: new Center(
-        child: new Column
-          (
-          children: <Widget>[
-           new Text(widget.word),
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    debugPrint(Strings.tracesTag_quickTest + "aha! didChangeAppLifecycleState?");
-  }
 }

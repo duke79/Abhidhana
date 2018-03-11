@@ -91,7 +91,7 @@ class HomeState extends State<Home>
             new TabPageSelector(controller: _tabController)
           ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
