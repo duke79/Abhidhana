@@ -139,7 +139,6 @@ class Trie {
   }
 
   List<String> suggestions(String prefix, {int length}) {
-    //Todo: Use length
     List<String> list = new List();
     TrieNode lastNode = root;
     int i = 0;

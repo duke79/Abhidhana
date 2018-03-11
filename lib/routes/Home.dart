@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/model/MyLocale.dart';
+import 'package:myapp/data/Strings.dart';
 import 'package:myapp/widgets/BatteryLevel.dart';
 import 'package:myapp/widgets/ChargingStatus.dart';
 import 'package:myapp/widgets/MyDrawer.dart';
@@ -45,7 +47,7 @@ class _MyHomePageState extends State<Home>
           (
           children: <Widget>[
             new InkWell(
-              onTap: () => Navigator.of(context).pushNamed("/search"),
+              onTap: () => Navigator.of(context).pushNamed(Strings.route_search),
               child: new IgnorePointer (
                 child: new Container(
                   margin: new EdgeInsets.only(
@@ -54,7 +56,7 @@ class _MyHomePageState extends State<Home>
                   ),
                   width: (Screen.width * 0.6)/ Screen.GOLDEN_RATIO,
                   child: new Hero(
-                    tag: "SearchViewTag",
+                    tag: Strings.widgetTag_prefix,
                     child: new SearchBar(
                       new SearchViewParams(
                         _controller,
@@ -80,11 +82,11 @@ class _MyHomePageState extends State<Home>
                   () {
                 _scaffoldKey.currentState.showBottomSheet<Null>((
                     BuildContext context) {
-                  return new Text("fdsf");
+                  return new Text(MyLocale.of(context).value(Strings.localeKey_sheet));
                 });
               }
               ,
-              child: const Text('showSheet'),
+              child: new Text(MyLocale.of(context).value(Strings.localeKey_showSheet)),
             ),
             new TabPageSelector(controller: _tabController)
           ],
@@ -95,6 +97,6 @@ class _MyHomePageState extends State<Home>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    debugPrint("aha! didChangeAppLifecycleState?");
+    debugPrint(Strings.tracesTag_quickTest + "aha! didChangeAppLifecycleState?");
   }
 }

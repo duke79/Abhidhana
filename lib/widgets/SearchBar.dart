@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:myapp/data/Strings.dart';
 
 class SearchViewParams{
   TextEditingController controller;
@@ -22,7 +22,7 @@ class SearchBar extends StatefulWidget {
   SearchViewParams params;
 
   SearchBar(this.params){
-    debugPrint("SearchView:");
+    debugPrint(Strings.trace_searchView);
   }
 
   @override

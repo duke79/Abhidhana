@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/data/DatabaseServices.dart';
+import 'package:myapp/data/Strings.dart';
 
 class Suggestions extends State<SuggestionsView> {
 
@@ -41,9 +42,7 @@ class Suggestions extends State<SuggestionsView> {
   }
 
   /*const fields*/
-  static const String SELECT_100_WORDS = "select * from entries limit 0,100";
-  static const String SELECT_ALL_TABLES = "SELECT name FROM sqlite_master WHERE type=\'table\'";
-  static const String SELECT_WORDS_STARTING_WITH = "select * from entries where UPPER(word) like UPPER(\"INPUT_1%\") limit INPUT_2";
+
 
   /*Local fields*/
   Set<String> _suggestions = new Set<String>();
@@ -52,9 +51,9 @@ class Suggestions extends State<SuggestionsView> {
       AnimatedListState>();
 
   String get _query {
-    return SELECT_WORDS_STARTING_WITH.replaceAll(
-        new RegExp(r"INPUT_1"), prefix).replaceAll(
-        new RegExp(r"INPUT_2"), "30");
+    return Strings.SQL_SELECT_WORDS_STARTING_WITH.replaceAll(
+        new RegExp(Strings.SQL_VAR_INPUT1), prefix).replaceAll(
+        new RegExp(Strings.SQL_VAR_INPUT2), Strings.SQL_VAR_LIMIT);
   }
 
   /*Public fields*/
@@ -65,7 +64,7 @@ class Suggestions extends State<SuggestionsView> {
     if (null != _keyAnimatedList.currentState) {
       for(int i=_suggestions.length-1;i>=0;i--){
         _keyAnimatedList.currentState.removeItem(i,(BuildContext context, Animation<double> animation) {
-          new Text("I am gone");
+          new Text(Strings.str_gone);
         });
       }
     }

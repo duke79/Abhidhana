@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/data/Strings.dart';
 
 class MyDrawer extends StatelessWidget {
 
@@ -7,8 +8,8 @@ class MyDrawer extends StatelessWidget {
     return new Column(
         children: <Widget>[
           new UserAccountsDrawerHeader(
-              accountName: new Text("Vilokan Labs"),
-              accountEmail: new Text("VilokanLabs@gmail.com")),
+              accountName: new Text(Strings.str_accountName),
+              accountEmail: new Text(Strings.str_accountEmail)),
           new MediaQuery.removePadding(
               context: context,
               child: new Expanded(
@@ -23,11 +24,12 @@ class MyDrawer extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment
                                       .stretch,
-                                  children: ["a", "b"].map((String id) {
+                                  children: Strings.str_drawerItems.map((String id) {
                                     return new ListTile(
                                       leading: new CircleAvatar(
                                           child: new Text(id)),
-                                      title: new Text('Drawer item $id'),
+                                      title: new Text(
+                                          Strings.str_drawerItem + id),
                                       onTap: null,
                                     );
                                   }).toList(),

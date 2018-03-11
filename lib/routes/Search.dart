@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/model/Screen.dart';
+import 'package:myapp/data/Strings.dart';
 import 'package:myapp/widgets/SearchBar.dart';
 import 'package:myapp/widgets/Suggestions.dart';
 
@@ -38,7 +39,7 @@ class Search extends StatelessWidget {
       margin: new EdgeInsets.only(top: Screen.width / 20,),
       width: Screen.width / Screen.GOLDEN_RATIO,
       child: new Hero(
-        tag: "SearchViewTag",
+        tag: Strings.widgetTag_prefix,
         child: new SearchBar(
           new SearchViewParams(
             _controller,
