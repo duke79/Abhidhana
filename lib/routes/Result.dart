@@ -23,18 +23,45 @@ class ResultState extends State<Result> {
           child: new Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              new AnimatedAlign(
-                alignment: Alignment.center,
-                duration: const Duration(seconds: 1),
-                child: new Text(
-                  widget.word,
-                  textScaleFactor: 3.0,
+              new Container(
+                decoration: new ShapeDecoration(
+                  //color: Colors.blue[500],
+                  gradient: new LinearGradient(
+                    colors: <Color>[
+                      Colors.blue[900],
+                      Colors.blue[500]
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.center,
+                  ),
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.all(
+                        new Radius.circular(10.0),
+                      ),
+                  ),
+                  shadows: <BoxShadow>[
+                    new BoxShadow(
+                      color: const Color(0xcc000000),
+                      offset: new Offset(0.0, 2.0),
+                      blurRadius: 2.0,
+                    ),
+                  ],
+                ),
+                child: new AnimatedAlign(
+                  alignment: Alignment.lerp(
+                      Alignment.centerLeft, Alignment.center, 0.15),
+                  duration: const Duration(seconds: 1),
+                  child: new Text(
+                    widget.word,
+                    style: const TextStyle(color: Colors.white),
+                    textScaleFactor: 3.0,
+                  ),
                 ),
               ),
               new AnimatedAlign(
                 alignment: Alignment.center,
                 duration: const Duration(seconds: 1),
-                child: _definition=="" ? new CircularProgressIndicator()
+                child: _definition == "" ? new CircularProgressIndicator()
                     : new Text(
                   _definition,
                   textScaleFactor: 2.0,
