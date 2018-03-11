@@ -13,10 +13,10 @@ class Home extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  HomeState createState() => new HomeState();
 }
 
-class _MyHomePageState extends State<Home>
+class HomeState extends State<Home>
     with SingleTickerProviderStateMixin {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();

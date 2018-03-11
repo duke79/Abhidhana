@@ -26,7 +26,9 @@ class Search extends StatelessWidget {
             //SearchView
             new Builder(builder: _searchView,),
             //SuggestionsView
-            new SuggestionsView(key:_keySuggestions),
+            new SuggestionsView(key: _keySuggestions, onSelected: (word) {
+              Navigator.of(context).pushNamed(Strings.route_result + "/"+word);
+            },),
           ],
         ),
       ),
@@ -64,7 +66,8 @@ class Search extends StatelessWidget {
 
   /*Local fields*/
   final TextEditingController _controller = new TextEditingController();
-  static final GlobalKey<Suggestions> _keySuggestions = new GlobalKey<Suggestions>();
+  static final GlobalKey<Suggestions> _keySuggestions = new GlobalKey<
+      Suggestions>();
 
   /*Public fields*/
   FocusNode focusNode;

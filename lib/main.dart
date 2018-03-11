@@ -4,6 +4,7 @@ import 'package:myapp/model/MyLocale.dart';
 import 'package:myapp/data/Strings.dart';
 import 'package:myapp/routes/MyCustomRoute.dart';
 import 'package:myapp/routes/Home.dart';
+import 'package:myapp/routes/Result.dart';
 import 'package:myapp/routes/Search.dart';
 
 void main() {
@@ -58,7 +59,7 @@ Widget myApp() {
         case Strings.route_result :
           return new MyCustomRoute(
             builder: (context) =>
-            new Home(title: path[2]),
+            new Result(word: path[2]),
             settings: settings,
           );
       }

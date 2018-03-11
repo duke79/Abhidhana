@@ -33,7 +33,7 @@ class Suggestions extends State<SuggestionsView> {
     if (index >= _suggestions.length)
       return null;
     return new GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(Strings.route_result+"/${_suggestions.elementAt(index)}"),
+      onTap: () => widget.onSelected(_suggestions.elementAt(index)),
       child: new Row(
         children: <Widget>[
           new Text(
@@ -81,8 +81,12 @@ class Suggestions extends State<SuggestionsView> {
   }
 }
 
+typedef void SuggestionSelectedCallback(String word);
+
 class SuggestionsView extends StatefulWidget {
-  SuggestionsView({Key key}) :super(key: key);
+  SuggestionsView({this.onSelected, Key key}) :super(key: key);
+
+  final SuggestionSelectedCallback onSelected;
 
   @override
   Suggestions createState() => new Suggestions();
