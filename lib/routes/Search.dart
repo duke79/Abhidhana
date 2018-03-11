@@ -26,9 +26,13 @@ class Search extends StatelessWidget {
             //SearchView
             new Builder(builder: _searchView,),
             //SuggestionsView
-            new SuggestionsView(key: _keySuggestions, onSelected: (word) {
-              Navigator.of(context).pushNamed(Strings.route_result + "/"+word);
-            },),
+            new SuggestionsView(
+              key: _keySuggestions,
+              onSelected: (word) {
+                Navigator.of(context).pushReplacementNamed(
+                    Strings.route_result + "/" + word);
+              },
+            ),
           ],
         ),
       ),
@@ -47,6 +51,10 @@ class Search extends StatelessWidget {
             _controller,
             onChangedCB: (value) {
               _keySuggestions.currentState.prefix = value;
+            },
+            onSubmittedCB: (value) {
+              Navigator.of(context).pushReplacementNamed(
+                  Strings.route_result + "/" + value);
             },
             focusNode: focusNode,
             decoration: new InputDecoration(
