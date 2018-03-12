@@ -21,7 +21,13 @@ class ResultState extends State<Result> {
                   ),
                 ],
               ),
-              new Definitions(word: widget.word),
+              new Container(
+                margin: new EdgeInsets.only(
+                  top: 20.0,
+                  left: 100.0,
+                ),
+                child: new Definitions(word: widget.word),
+              ),
             ],
           ),
         ),
