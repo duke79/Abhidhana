@@ -6,11 +6,11 @@ import 'package:myapp/data/Strings.dart';
 import 'package:myapp/model/Screen.dart';
 
 class ResultState extends State<Result> {
-  String _definition = "";
+  List<String> _definitions = new List();
 
   @override
   void initState() {
-    _loadDefinition();
+    _loadDefinitions();
     super.initState();
   }
 
@@ -70,10 +70,18 @@ class ResultState extends State<Result> {
                   top: 20.0,
                   left: 100.0,
                 ),
-                child: _definition == "" ? new CircularProgressIndicator()
-                    : new Text(
-                  _definition,
-                  textScaleFactor: 2.0,
+                child: _definitions.length < 1 ? new CircularProgressIndicator()
+                    : new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _definitions.map((String definition) {
+                    return new Container(
+                      margin: const EdgeInsets.only(top: 20.0),
+                      child: new Text(
+                        definition,
+                        textScaleFactor: 2.0,
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],
@@ -84,17 +92,21 @@ class ResultState extends State<Result> {
   }
 
   /*Methods*/
-  Future _loadDefinition() async {
+  Future _loadDefinitions() async {
     debugPrint("Loading DB for Stuggestions: ");
 
     List<Map> list = await (await DatabaseServices.db).rawQuery(_query);
 
-    Map elem = list.elementAt(0);
-    if (null != elem) {
-      setState(() {
-        _definition = elem["definition"].toString().replaceAll("\n", "");
-      });
-    }
+    _definitions.clear();
+    list.forEach((elem) {
+      if (null != elem) {
+        setState(() {
+          String definition = elem["definition"].toString().replaceAll(
+              "\n", "");
+          _definitions.add(definition);
+        });
+      }
+    });
   }
 
   String get _query {
