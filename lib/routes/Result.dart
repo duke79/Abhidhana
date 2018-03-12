@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:myapp/data/DatabaseServices.dart';
 import 'package:myapp/data/Strings.dart';
-import 'package:myapp/model/Screen.dart';
+import 'package:myapp/widgets/TitleBar.dart';
 
 class ResultState extends State<Result> {
   List<String> _definitions = new List();
@@ -27,41 +27,7 @@ class ResultState extends State<Result> {
               new Row(
                 children: <Widget>[
                   new Expanded(
-                    child: new Container(
-                      decoration: new ShapeDecoration(
-                        //color: Colors.blue[500],
-                        gradient: new LinearGradient(
-                          colors: <Color>[
-                            Colors.blue[900],
-                            Colors.blue[500]
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.center,
-                        ),
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.all(
-                            new Radius.circular(10.0),
-                          ),
-                        ),
-                        shadows: <BoxShadow>[
-                          new BoxShadow(
-                            color: const Color(0xcc000000),
-                            offset: new Offset(0.0, 2.0),
-                            blurRadius: 2.0,
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.only(
-                        left: 50.0,
-                        top: 12.0,
-                        bottom: 12.0,
-                      ),
-                      child: new Text(
-                        widget.word,
-                        style: const TextStyle(color: Colors.white),
-                        textScaleFactor: 3.0,
-                      ),
-                    ),
+                    child: new TitleBar(title: widget.word),
                   ),
                 ],
               ),
