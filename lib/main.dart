@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:myapp/data/DatabaseServices.dart';
 import 'package:myapp/model/MyLocale.dart';
 import 'package:myapp/data/Strings.dart';
@@ -9,9 +8,6 @@ import 'package:myapp/routes/Result.dart';
 import 'package:myapp/routes/Search.dart';
 
 void main() {
-  /*Hide StatusBar (top) & Android buttons (bottom)
-  https://stackoverflow.com/a/43879271/9404410*/
-  SystemChrome.setEnabledSystemUIOverlays([]);
   //Run app
   runApp(myApp());
   //Cache heavy data

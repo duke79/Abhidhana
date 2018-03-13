@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myapp/widgets/Definitions.dart';
 import 'package:myapp/widgets/TitleBar.dart';
 
@@ -8,6 +9,10 @@ class ResultState extends State<Result> {
 
   @override
   Widget build(BuildContext context) {
+    /*Hide StatusBar (top) & Android buttons (bottom)
+  https://stackoverflow.com/a/43879271/9404410*/
+    SystemChrome.setEnabledSystemUIOverlays([]);
+
     return new Scaffold(
       body: new Container(
         child: new Center(

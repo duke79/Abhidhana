@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myapp/model/MyLocale.dart';
 import 'package:myapp/data/Strings.dart';
 import 'package:myapp/widgets/BatteryLevel.dart';
@@ -31,6 +32,10 @@ class HomeState extends State<Home>
   Widget build(BuildContext context) {
     Screen.updateScreen(context);
     final TextEditingController _controller = new TextEditingController();
+
+    /*Hide StatusBar (top) & Android buttons (bottom)
+  https://stackoverflow.com/a/43879271/9404410*/
+    SystemChrome.setEnabledSystemUIOverlays([]);
 
     return new Scaffold(
       key: _scaffoldKey,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myapp/model/Screen.dart';
 import 'package:myapp/data/Strings.dart';
 import 'package:myapp/widgets/SearchBar.dart';
@@ -12,6 +13,10 @@ class Search extends StatelessWidget {
   Widget build(BuildContext context) {
     /*Initialization*/
     Screen.updateScreen(context);
+
+    /*Hide StatusBar (top) & Android buttons (bottom)
+  https://stackoverflow.com/a/43879271/9404410*/
+    SystemChrome.setEnabledSystemUIOverlays([]);
 
     return new Scaffold(
       /*appBar: new AppBar(
