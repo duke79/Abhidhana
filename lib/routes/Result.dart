@@ -3,17 +3,31 @@ import 'package:myapp/widgets/Definitions.dart';
 import 'package:myapp/widgets/TitleBar.dart';
 
 class ResultState extends State<Result> {
+  var _controller = new PageController();
+
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Container(
-        margin: const EdgeInsets.only(top: 200.0),
-        alignment: const AlignmentDirectional(1.0, 1.0),
         child: new Center(
           child: new Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
+              new Container(
+                //Because PageView doesn't work under flex widgets (Column,Row)
+                height: 200.0,
+                child: new PageView.builder(
+                  physics: new AlwaysScrollableScrollPhysics(),
+                  controller: _controller,
+                  itemBuilder: (context, index) {
+                    return new ConstrainedBox(
+                      constraints: const BoxConstraints.expand(),
+                      child: new FlutterLogo(colors: Colors.blue,),
+                    );
+                  },
+                ),
+              ),
               new Row(
                 children: <Widget>[
                   new Expanded(
