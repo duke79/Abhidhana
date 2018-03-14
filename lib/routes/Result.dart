@@ -12,12 +12,13 @@ class ResultState extends State<Result> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     _animationController = new AnimationController(
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 20),
         vsync: this
     );
-    _animation = new Tween(begin: 600.0, end: 0.0).animate(_animationController);
-    _animation.addListener((){
-      setState(()=>null);
+    _animation =
+        new Tween(begin: 600.0, end: 0.0).animate(_animationController);
+    _animation.addListener(() {
+      setState(() => null);
     });
     _animationController.forward();
     super.initState();
@@ -36,38 +37,51 @@ class ResultState extends State<Result> with SingleTickerProviderStateMixin {
           child: new Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              new Container(
-                //Because PageView doesn't work under flex widgets (Column,Row)
-                height: 200.0,
-                child: new PageView.builder(
-                  physics: new AlwaysScrollableScrollPhysics(),
-                  controller: _controller,
-                  itemBuilder: (context, index) {
-                    return new ConstrainedBox(
-                      constraints: const BoxConstraints.expand(),
-                      child: new FlutterLogo(colors: Colors.blue,),
-                    );
-                  },
-                ),
-              ),
-              new Container(
-                margin: new EdgeInsets.only(
-                  top: _animation.value.toDouble(),
-                ),
-                child: new Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: new TitleBar(title: widget.word),
+              new Stack(
+                children: <Widget>[
+                  new Container(
+                    margin: new EdgeInsets.only(
+                      top: _animation.value.toDouble()/2,
                     ),
-                  ],
-                ),
-              ),
-              new Container(
-                margin: new EdgeInsets.only(
-                  top: 20.0,
-                  left: 100.0,
-                ),
-                child: new Definitions(word: widget.word),
+                    //Because PageView doesn't work under flex widgets (Column,Row)
+                    height: _animation.value.toDouble()/2+200,
+                    child: new PageView.builder(
+                      physics: new AlwaysScrollableScrollPhysics(),
+                      controller: _controller,
+                      itemBuilder: (context, index) {
+                        return new ConstrainedBox(
+                          constraints: const BoxConstraints.expand(),
+                          child: new FlutterLogo(colors: Colors.blue,),
+                        );
+                      },
+                    ),
+                  ),
+                  new Container(
+                    margin: new EdgeInsets.only(
+                      top: (1.5*_animation.value.toDouble())+200.0,
+                    ),
+                    child: new Column(
+                      children: <Widget>[
+                        new Container(
+                          child: new Row(
+                            children: <Widget>[
+                              new Expanded(
+                                child: new TitleBar(title: widget.word),
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Container(
+                          margin: new EdgeInsets.only(
+                            top: 20.0,
+                            left: 100.0,
+                          ),
+                          child: new Definitions(word: widget.word),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
