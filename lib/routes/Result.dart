@@ -3,8 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:myapp/widgets/Definitions.dart';
 import 'package:myapp/widgets/TitleBar.dart';
 
-class ResultState extends State<Result> {
+class ResultState extends State<Result> with SingleTickerProviderStateMixin {
   var _controller = new PageController();
+
+  AnimationController _animationController;
+  Animation<num> _animation;
+
+  @override
+  void initState() {
+    _animationController = new AnimationController(
+        duration: const Duration(seconds: 2),
+        vsync: this
+    );
+    _animation = new Tween(begin: 600.0, end: 0.0).animate(_animationController);
+    _animation.addListener((){
+      setState(()=>null);
+    });
+    _animationController.forward();
+    super.initState();
+  }
 
 
   @override
@@ -33,12 +50,17 @@ class ResultState extends State<Result> {
                   },
                 ),
               ),
-              new Row(
-                children: <Widget>[
-                  new Expanded(
-                    child: new TitleBar(title: widget.word),
-                  ),
-                ],
+              new Container(
+                margin: new EdgeInsets.only(
+                  top: _animation.value.toDouble(),
+                ),
+                child: new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new TitleBar(title: widget.word),
+                    ),
+                  ],
+                ),
               ),
               new Container(
                 margin: new EdgeInsets.only(
