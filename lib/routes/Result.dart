@@ -38,6 +38,12 @@ class ResultState extends State<Result> with SingleTickerProviderStateMixin {
   https://stackoverflow.com/a/43879271/9404410*/
     SystemChrome.setEnabledSystemUIOverlays([]);
 
+    var _parallaxTopMargin = _animation.value.toDouble() / 2 +
+        _dragDelta.dy / 4;
+    var _parallaxHeight = _animation.value.toDouble() / 2 + 200 +
+        _dragDelta.dy / 2;
+    var _bodyTopMargin = (1.5 * _animation.value.toDouble()) + 200.0 +
+        _dragDelta.dy;
     return new Scaffold(
       body: new Container(
         child: new Center(
@@ -48,10 +54,10 @@ class ResultState extends State<Result> with SingleTickerProviderStateMixin {
                 children: <Widget>[
                   new Container(
                     margin: new EdgeInsets.only(
-                      top: _animation.value.toDouble() / 2,
+                      top: _parallaxTopMargin > 0.0 ? _parallaxTopMargin : 0.0,
                     ),
                     //Because PageView doesn't work under flex widgets (Column,Row)
-                    height: _animation.value.toDouble() / 2 + 200,
+                    height: _parallaxHeight > 0.0 ? _parallaxHeight : 0.0,
                     child: new PageView.builder(
                       physics: new AlwaysScrollableScrollPhysics(),
                       controller: _controller,
@@ -71,8 +77,7 @@ class ResultState extends State<Result> with SingleTickerProviderStateMixin {
                     },
                     child: new Container(
                       margin: new EdgeInsets.only(
-                        top: (1.5 * _animation.value.toDouble()) + 200.0 +
-                            (_dragDelta != null ? _dragDelta.dy : 0.0),
+                        top: _bodyTopMargin > 0.0 ? _bodyTopMargin : 0.0,
                       ),
                       child: new Column(
                         children: <Widget>[
