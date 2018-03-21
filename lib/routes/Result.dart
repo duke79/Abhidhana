@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp/widgets/Definitions.dart';
 import 'package:myapp/widgets/TitleBar.dart';
@@ -13,14 +14,18 @@ class ResultState extends State<Result> with SingleTickerProviderStateMixin {
   void initState() {
     _animationController = new AnimationController(
         duration: const Duration(seconds: 20),
-        vsync: this
+        vsync: this,
     );
     _animation =
         new Tween(begin: 600.0, end: 0.0).animate(_animationController);
     _animation.addListener(() {
       setState(() => null);
     });
-    _animationController.forward();
+    _animationController.animateWith(new SpringSimulation(new SpringDescription.withDampingRatio(
+      mass: 2.0,
+      stiffness: 2.0,
+      ratio: 1.0
+    ),0.0,1.0,1.0));
     super.initState();
   }
 
