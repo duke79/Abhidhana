@@ -8,6 +8,7 @@ import 'package:myapp/widgets/MyDrawer.dart';
 import 'package:myapp/model/Screen.dart';
 import 'package:myapp/widgets/SearchBar.dart';
 
+//This route is the home screen for this app.
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 

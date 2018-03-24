@@ -65,6 +65,10 @@ class ResultState extends State<Result> {
   }
 }
 
+//This route shows the word definition.
+//ToDo:<Enhancement> Scroll for the content, absolutely required once the tile reaches the top.
+//ToDo:<Issue> Touch disambiguation? for the above mentioned scroll, since drag must work even
+// if the title hasn't reached the top.
 class Result extends StatefulWidget {
   Result({Key key, this.word}) : super(key: key);
 

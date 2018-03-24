@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//This route takes care of the things which happen on swithing a route.
 class MyCustomRoute<T> extends MaterialPageRoute<T> {
   MyCustomRoute({ WidgetBuilder builder, RouteSettings settings })
       : super(builder: builder, settings: settings);

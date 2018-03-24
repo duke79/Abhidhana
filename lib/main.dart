@@ -7,6 +7,7 @@ import 'package:myapp/routes/Home.dart';
 import 'package:myapp/routes/Result.dart';
 import 'package:myapp/routes/Search.dart';
 
+//ToDo:<Infra> Install markdown plugin (https://plugins.jetbrains.com/plugin/7701-gfm)
 void main() {
   //Run app
   runApp(myApp());
@@ -14,6 +15,10 @@ void main() {
   DatabaseServices.trie;
 }
 
+//ToDo:<Enhancement> Home Route (partially done)
+//ToDo:<Enhancement> Search Route (partially done)
+//ToDo:<Enhancement> Result Route (partially done)
+//ToDo:<Enhancement> Preference Route (not yet started)
 Widget myApp() {
   return new MaterialApp(
     title: Strings.app_title,
