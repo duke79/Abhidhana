@@ -54,25 +54,25 @@ class ParallaxState extends State<Parallax>
 
   bool get _bAtTop => _currentPosition == 0.0;
 
-  bool get _bAboveMidParallax {
+  bool get _bInFirstQuarter {
     return _currentPosition > 0.0
         && _currentPosition < ((_parallaxPosition) / 2);
   }
 
-  bool get _bBelowMidParraxAboveParallax {
+  bool get _bInSecondQuarter {
     return _currentPosition > ((_parallaxPosition) / 2)
         && _currentPosition < _parallaxPosition;
   }
 
   bool get _bAtParallax => _currentPosition == _parallaxPosition;
 
-  bool get _bBelowParallaxAboveTheHalfwayBetweenParallaAndBottom {
+  bool get _bInThirdQuarter {
     return _currentPosition > _parallaxPosition
         && _currentPosition <
             _parallaxPosition + (_bottomWidgetPosition - _parallaxPosition) / 2;
   }
 
-  bool get _bBelowParallaxBelowTheHalfwayBetweenParallaAndBottom {
+  bool get _bInFourthQuarter {
     return _currentPosition >
         _parallaxPosition + (_bottomWidgetPosition - _parallaxPosition) / 2
         && _currentPosition < _bottomWidgetPosition;
@@ -163,19 +163,19 @@ class ParallaxState extends State<Parallax>
     if (_bAtTop || _bAtParallax || _bAtBottom)
       return;
 
-    if (_bAboveMidParallax)
+    if (_bInFirstQuarter)
       _initAnimation(begin: _currentAnimationPoint,
           end: _topAnimationPoint);
 
-    if (_bBelowMidParraxAboveParallax)
+    if (_bInSecondQuarter)
       _initAnimation(begin: _currentAnimationPoint,
           end: _parallaxAnimationPoint);
 
-    if (_bBelowParallaxAboveTheHalfwayBetweenParallaAndBottom)
+    if (_bInThirdQuarter)
       _initAnimation(begin: _currentAnimationPoint,
           end: _parallaxAnimationPoint);
 
-    if (_bBelowParallaxBelowTheHalfwayBetweenParallaAndBottom)
+    if (_bInFourthQuarter)
       _initAnimation(begin: _currentAnimationPoint,
           end: _bottomAnimationPoint);
   }
