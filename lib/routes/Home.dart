@@ -36,7 +36,7 @@ class HomeState extends State<Home>
 
     /*Hide StatusBar (top) & Android buttons (bottom)
   https://stackoverflow.com/a/43879271/9404410*/
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
     return new Scaffold(
       key: _scaffoldKey,

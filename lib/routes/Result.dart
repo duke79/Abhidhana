@@ -19,7 +19,7 @@ class ResultState extends State<Result> {
   Widget build(BuildContext context) {
     /*Hide StatusBar (top) & Android buttons (bottom)
   https://stackoverflow.com/a/43879271/9404410*/
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
     return new Scaffold(
       //TODO(Issue): Bottom navigation must be visible

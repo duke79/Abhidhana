@@ -30,10 +30,21 @@ class ParallaxState extends State<Parallax>
   FlowDelegate _flowDelegate;
   ValueNotifier<double> _positionNotifier;
   Size _screenSize;
+  double _animationEnd;
 
   @override
   void initState() {
-    _initAnimation();
+    _positionNotifier = new ValueNotifier<double>(0.0);
+    _flowDelegate = new ParallaxFlowDelegate(
+      positionNotifier: _positionNotifier,
+      parallaxRatio: widget.parallaxRatio,
+      bottomWidget: widget.bottomWidget,
+    );
+
+    _animationController = new AnimationController(
+      vsync: this,
+    );
+    _initAnimation(begin: 0.0, end: 100.0 * widget.parallaxRatio);
     super.initState();
   }
 
@@ -48,59 +59,63 @@ class ParallaxState extends State<Parallax>
     return new Flow(
       delegate: _flowDelegate,
       children: <Widget>[
+        //TODO(Enhancement): Handle flings.
+        //Fling candidates knows at the moment -
+        // 1. If bottom position and _bottomWidget is tapped.
+        // 2. If user drags and leaves at some random position (apart form top, bottom and parallaxRatio position).
+        // 3. If the top position and _bottomWidget is tapped.
         new GestureDetector(
           onVerticalDragUpdate: _onVerticalDragUpdate,
           child: widget.childParallax,
         ),
         new GestureDetector(
           onVerticalDragUpdate: _onVerticalDragUpdate,
+          onTap: _onTap,
           child: widget.childBody,
         ),
       ],
     );
   }
 
-  ///  Handles dragging.
-  ///  Updates the value of _positionNotifier, which in turn notifies the [_flowDelegate].
-  ///  [_flowDelegate] takes care of repositioning the children.
-  //TODO(Issue): Locked once reches bottom/top. Unable to drag then. (only in release?)
-  //Sometimes, locked at any random position, drag delta is captured but has no impact.
-  //After some, elements are suddenly painted at the right position (which would be right for that time). But the intermediate frames/paining is missing.
-  void _onVerticalDragUpdate(DragUpdateDetails details) {
-    _positionNotifier.value += details.delta.dy;
-  }
-
   /// Handles the Animation callbacks.
   /// Updates the value of _positionNotifier, which in turn notifies the [_flowDelegate].
   ///  [_flowDelegate] takes care of repositioning the children.
   void _onAnimationValueChanged() {
+    if(_animationEnd == _animation.value.toDouble())
+      _animation.removeListener(_onAnimationValueChanged);
     if (null != _screenSize)
       _positionNotifier.value =
           _animation.value.toDouble() * _screenSize.height / 100;
   }
 
-  void _initAnimation() {
-    _animationController = new AnimationController(
-      vsync: this,
-    );
+  void _initAnimation({double begin = 0.0, double end = 100.0}) {
+    _animationEnd = end;
     _animation =
-        new Tween<double>(begin: 0.0, end: 100 * widget.parallaxRatio)
+        new Tween<double>(begin: begin, end: end)
             .animate(
             _animationController);
-
-    _positionNotifier = new ValueNotifier<double>(0.0);
-    _flowDelegate = new ParallaxFlowDelegate(
-      positionNotifier: _positionNotifier,
-      parallaxRatio: widget.parallaxRatio,
-      bottomWidget: widget.bottomWidget,
-    );
     _animation.addListener(_onAnimationValueChanged);
+    _animation.addStatusListener(_onAnimationStateChanged);
     _animationController.animateWith(
         new SpringSimulation(new SpringDescription.withDampingRatio(
             mass: 20.0,
             stiffness: 2.0,
             ratio: 1.0
-        ), 0.0, 1.0, 0.5));
+        ), 0.0, 1.0, 2.0));
+  }
+
+  ///  Handles dragging.
+  ///  Updates the value of _positionNotifier, which in turn notifies the [_flowDelegate].
+  ///  [_flowDelegate] takes care of repositioning the children.
+  void _onVerticalDragUpdate(DragUpdateDetails details) {
+    _positionNotifier.value += details.delta.dy;
+  }
+
+  void _onTap() {
+    if (_positionNotifier.value ==
+        context.size.height - widget.bottomWidget.currentContext.size.height) {
+      _initAnimation(begin: 100.0, end: widget.parallaxRatio * 100);
+    }
   }
 }
 
@@ -110,6 +125,7 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
   ValueNotifier<double> positionNotifier;
   double parallaxRatio;
+
   /// Key to the bottom widget (part of the Body), which should never go out of view while dragging down.
   GlobalKey bottomWidget;
 
