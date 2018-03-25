@@ -36,6 +36,11 @@ class ParallaxState extends State<Parallax>
   double get _contextHeight => context.size.height;
   double get _bottomWidgetPosition => _contextHeight - _bottomWidgetHeight;
   double get _currentPosition => _positionNotifier.value;
+  double get _currentAnimationPoint => 100 * _currentPosition / _contextHeight;
+  double get _parallaxAnimationPoint => 100 * _parallaxPosition / _contextHeight;
+  double get _bottomAnimationPoint => 100.0;//100 * _bottomWidgetPosition / _contextHeight;
+  double get _topAnimationPoint => 0.0;
+
   set _currentPosition(double value) => _positionNotifier.value = value;
 
   @override
@@ -123,22 +128,35 @@ class ParallaxState extends State<Parallax>
 
     if (_currentPosition > 0.0
         && _currentPosition < ((_parallaxPosition) / 2))
-      _initAnimation(
-          begin: 100 * _currentPosition / _contextHeight,
-          end: 0.0
-      );
+      _initAnimation(begin: _currentAnimationPoint,
+          end: _topAnimationPoint);
 
     if (_currentPosition > (_parallaxPosition) / 2
         && _currentPosition < _parallaxPosition)
-      _initAnimation(
-          begin: 100 * _currentPosition / _contextHeight,
-          end: 100 * _parallaxPosition / _contextHeight
-      );
+      _initAnimation(begin: _currentAnimationPoint,
+          end: _parallaxAnimationPoint);
+
+    if (_currentPosition > _parallaxPosition
+        && _currentPosition < _parallaxPosition + (_bottomWidgetPosition - _parallaxPosition)/2)
+      _initAnimation(begin: _currentAnimationPoint,
+          end: _parallaxAnimationPoint);
+
+    if (_currentPosition > _parallaxPosition + (_bottomWidgetPosition - _parallaxPosition)/2
+    && _currentPosition < _bottomWidgetPosition)
+      _initAnimation(begin: _currentAnimationPoint,
+          end: _bottomAnimationPoint);
   }
 
   void _onTap() {
+    if (_currentPosition == 0.0) {
+      _initAnimation(begin: _topAnimationPoint, end: widget.parallaxRatio * 100);
+    }
+    if (_currentPosition == _parallaxPosition) {
+      _initAnimation(begin: _currentAnimationPoint,
+          end: _bottomAnimationPoint);
+    }
     if (_currentPosition == _bottomWidgetPosition) {
-      _initAnimation(begin: 100.0, end: widget.parallaxRatio * 100);
+      _initAnimation(begin: _bottomAnimationPoint, end: _parallaxAnimationPoint);
     }
   }
 }
