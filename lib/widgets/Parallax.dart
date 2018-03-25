@@ -80,6 +80,8 @@ class ParallaxState extends State<Parallax>
 
   bool get _bAtBottom => _currentPosition == _bottomWidgetPosition;
 
+  num get _velocityThreshold => 200.0;
+
   set _currentPosition(double value) => _positionNotifier.value = value;
 
   @override
@@ -159,25 +161,57 @@ class ParallaxState extends State<Parallax>
     _currentPosition += details.delta.dy;
   }
 
+  //TODO(Enhancement): Increase fling velocity as per the velocity at drag end?
   void _onDragEnd(DragEndDetails details) {
+    double vX = details.velocity.pixelsPerSecond.dx;
+    double vY = details.velocity.pixelsPerSecond.dy;
+
     if (_bAtTop || _bAtParallax || _bAtBottom)
       return;
 
-    if (_bInFirstQuarter)
-      _initAnimation(begin: _currentAnimationPoint,
-          end: _topAnimationPoint);
+    if (_bInFirstQuarter) {
+      if (vY > _velocityThreshold) {
+        _initAnimation(begin: _currentAnimationPoint,
+            end: _parallaxAnimationPoint);
+      }
+      else {
+        _initAnimation(begin: _currentAnimationPoint,
+            end: _topAnimationPoint);
+      }
+    }
 
-    if (_bInSecondQuarter)
-      _initAnimation(begin: _currentAnimationPoint,
-          end: _parallaxAnimationPoint);
+    if (_bInSecondQuarter) {
+      if (vY < -_velocityThreshold) {
+        _initAnimation(begin: _currentAnimationPoint,
+            end: _topAnimationPoint);
+      }
+      else {
+        _initAnimation(begin: _currentAnimationPoint,
+            end: _parallaxAnimationPoint);
+      }
+    }
 
-    if (_bInThirdQuarter)
-      _initAnimation(begin: _currentAnimationPoint,
-          end: _parallaxAnimationPoint);
+    if (_bInThirdQuarter) {
+      if (vY > _velocityThreshold) {
+        _initAnimation(begin: _currentAnimationPoint,
+            end: _bottomAnimationPoint);
+      }
+      else {
+        _initAnimation(begin: _currentAnimationPoint,
+            end: _parallaxAnimationPoint);
+      }
+    }
 
-    if (_bInFourthQuarter)
-      _initAnimation(begin: _currentAnimationPoint,
-          end: _bottomAnimationPoint);
+    if (_bInFourthQuarter) {
+      if (vY < -_velocityThreshold) {
+        _initAnimation(begin: _currentAnimationPoint,
+            end: _parallaxAnimationPoint);
+      }
+      else {
+        _initAnimation(begin: _currentAnimationPoint,
+            end: _bottomAnimationPoint);
+      }
+    }
   }
 
   void _onTap() {
