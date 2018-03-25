@@ -22,51 +22,48 @@ class ResultState extends State<Result> {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     return new Scaffold(
-      body: new Container(
-        child: new Center(
-          child: new SizedBox(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
-            child: new Parallax(
-              parallaxRatio: 0.5,
-              bottomWidget: _titleKey,
-              childParallax: new PageView.builder(
-                physics: new AlwaysScrollableScrollPhysics(),
-                controller: _controller,
-                itemBuilder: (context, index) {
-                  return new ConstrainedBox(
-                    constraints: const BoxConstraints.expand(),
-                    child: new FlutterLogo(colors: Colors.blue,),
-                  );
-                },
-              ),
-              childBody: new Container(
-                color: Colors.white,
-                child: new Column(
+      //TODO(Issue): Bottom navigation must be visible
+      // May use SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]), but it didn't work the last time. :(
+      resizeToAvoidBottomPadding: false,
+//TODO(Explore): Re-use widget in a tree?
+//      bottomNavigationBar: new BottomAppBar(
+//        child: _titleKey.currentContext.,
+//      ),
+      body: new Parallax(
+        parallaxRatio: 0.5,
+        bottomWidget: _titleKey,
+        childParallax: new PageView.builder(
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _controller,
+          itemBuilder: (context, index) {
+            return new ConstrainedBox(
+              constraints: const BoxConstraints.expand(),
+              child: new FlutterLogo(colors: Colors.blue,),
+            );
+          },
+        ),
+        childBody: new Container(
+          color: Colors.white,
+          child: new Column(
+            children: <Widget>[
+              new Container(
+                key: _titleKey,
+                child: new Row(
                   children: <Widget>[
-                    new Container(
-                      key : _titleKey,
-                      child: new Row(
-                        children: <Widget>[
-                          new Expanded(
-                            child: new TitleBar(title: widget.word),
-                          ),
-                        ],
-                      ),
-                    ),
-                    new Container(
-                      margin: new EdgeInsets.only(
-                        top: 20.0,
-                        left: 100.0,
-                      ),
-                      child: new Definitions(word: widget.word),
+                    new Expanded(
+                      child: new TitleBar(title: widget.word),
                     ),
                   ],
                 ),
               ),
-            ),
+              new Container(
+                margin: new EdgeInsets.only(
+                  top: 20.0,
+                  left: 100.0,
+                ),
+                child: new Definitions(word: widget.word),
+              ),
+            ],
           ),
         ),
       ),
