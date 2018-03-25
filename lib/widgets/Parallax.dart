@@ -29,8 +29,14 @@ class ParallaxState extends State<Parallax>
   Animation<num> _animation;
   FlowDelegate _flowDelegate;
   ValueNotifier<double> _positionNotifier;
-  Size _screenSize;
   double _animationEnd;
+
+  double get _bottomWidgetHeight => widget.bottomWidget.currentContext.size.height;
+  double get _parallaxPosition => widget.parallaxRatio * _contextHeight;
+  double get _contextHeight => context.size.height;
+  double get _bottomWidgetPosition => _contextHeight - _bottomWidgetHeight;
+  double get _currentPosition => _positionNotifier.value;
+  set _currentPosition(double value) => _positionNotifier.value = value;
 
   @override
   void initState() {
@@ -53,9 +59,6 @@ class ParallaxState extends State<Parallax>
   /// Positioning of these children is to be handled by [_flowDelegate].
   @override
   Widget build(BuildContext context) {
-    _screenSize = MediaQuery
-        .of(context)
-        .size;
     return new Flow(
       delegate: _flowDelegate,
       children: <Widget>[
@@ -66,10 +69,12 @@ class ParallaxState extends State<Parallax>
         // 3. If the top position and _bottomWidget is tapped.
         new GestureDetector(
           onVerticalDragUpdate: _onVerticalDragUpdate,
+          onVerticalDragEnd: _onDragEnd,
           child: widget.childParallax,
         ),
         new GestureDetector(
           onVerticalDragUpdate: _onVerticalDragUpdate,
+          onVerticalDragEnd: _onDragEnd,
           onTap: _onTap,
           child: widget.childBody,
         ),
@@ -81,39 +86,58 @@ class ParallaxState extends State<Parallax>
   /// Updates the value of _positionNotifier, which in turn notifies the [_flowDelegate].
   ///  [_flowDelegate] takes care of repositioning the children.
   void _onAnimationValueChanged() {
-    if(_animationEnd == _animation.value.toDouble())
+    if (_animationEnd == _animation.value.toDouble())
       _animation.removeListener(_onAnimationValueChanged);
-    if (null != _screenSize)
-      _positionNotifier.value =
-          _animation.value.toDouble() * _screenSize.height / 100;
+    _currentPosition =
+        _animation.value.toDouble() * _contextHeight / 100;
   }
 
-  void _initAnimation({double begin = 0.0, double end = 100.0}) {
+  void _initAnimation(
+      {double begin = 0.0, double end = 100.0, double velocity = 5.0}) {
     _animationEnd = end;
     _animation =
         new Tween<double>(begin: begin, end: end)
             .animate(
             _animationController);
     _animation.addListener(_onAnimationValueChanged);
-    _animation.addStatusListener(_onAnimationStateChanged);
     _animationController.animateWith(
         new SpringSimulation(new SpringDescription.withDampingRatio(
             mass: 20.0,
             stiffness: 2.0,
             ratio: 1.0
-        ), 0.0, 1.0, 2.0));
+        ), 0.0, 1.0, velocity));
   }
 
   ///  Handles dragging.
   ///  Updates the value of _positionNotifier, which in turn notifies the [_flowDelegate].
   ///  [_flowDelegate] takes care of repositioning the children.
   void _onVerticalDragUpdate(DragUpdateDetails details) {
-    _positionNotifier.value += details.delta.dy;
+    _currentPosition += details.delta.dy;
+  }
+
+  void _onDragEnd(DragEndDetails details) {
+    if (_currentPosition == 0.0
+        || _currentPosition == _parallaxPosition
+        || _currentPosition == _bottomWidgetPosition)
+      return;
+
+    if (_currentPosition > 0.0
+        && _currentPosition < ((_parallaxPosition) / 2))
+      _initAnimation(
+          begin: 100 * _currentPosition / _contextHeight,
+          end: 0.0
+      );
+
+    if (_currentPosition > (_parallaxPosition) / 2
+        && _currentPosition < _parallaxPosition)
+      _initAnimation(
+          begin: 100 * _currentPosition / _contextHeight,
+          end: 100 * _parallaxPosition / _contextHeight
+      );
   }
 
   void _onTap() {
-    if (_positionNotifier.value ==
-        context.size.height - widget.bottomWidget.currentContext.size.height) {
+    if (_currentPosition == _bottomWidgetPosition) {
       _initAnimation(begin: 100.0, end: widget.parallaxRatio * 100);
     }
   }
