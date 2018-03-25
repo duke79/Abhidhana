@@ -30,7 +30,9 @@ class ParallaxState extends State<Parallax>
 
   @override
   Widget build(BuildContext context) {
-    _screenSize = MediaQuery.of(context).size;
+    _screenSize = MediaQuery
+        .of(context)
+        .size;
     return new Flow(
       delegate: _flowDelegate,
       children: <Widget>[
@@ -50,9 +52,10 @@ class ParallaxState extends State<Parallax>
     _positionNotifier.value += details.delta.dy;
   }
 
-  void _onAnimationValueChanged(){
-    if(null != _screenSize)
-      _positionNotifier.value = _animation.value.toDouble()*_screenSize.height/100;
+  void _onAnimationValueChanged() {
+    if (null != _screenSize)
+      _positionNotifier.value =
+          _animation.value.toDouble() * _screenSize.height / 100;
   }
 
   void _initAnimation() {
@@ -79,28 +82,21 @@ class ParallaxState extends State<Parallax>
 class ParallaxFlowDelegate extends FlowDelegate {
 
   ValueNotifier<double> position;
-  double _lastPosition;
 
   double get _parallaxTopMargin {
-    double parallaxTopMargin = (8 * position.value) / 4;
-    parallaxTopMargin = parallaxTopMargin > 0.0 ? parallaxTopMargin : 0.0;
-    return parallaxTopMargin;
+    return position.value / 3;
   }
 
   double get _parallaxHeight {
-    double parallaxHeight = (8 * position.value) / 2;
-    return parallaxHeight;
+    return position.value / 2;
   }
 
   double get _bodyTopMargin {
-    double bodyTopMargin = (8 * position.value);
-    return bodyTopMargin;
+    return position.value;
   }
 
   ///  Listens to the notifications from `position`.
-  ParallaxFlowDelegate({this.position}) : super(repaint: position) {
-    _lastPosition = 0.0;
-  }
+  ParallaxFlowDelegate({this.position}) : super(repaint: position);
 
   @override
   BoxConstraints getConstraintsForChild(int i, BoxConstraints constraints) {
@@ -114,15 +110,18 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
   @override
   void paintChildren(FlowPaintingContext context) {
-    Size size = context.size;
-    int nbrChildren = context.childCount;
-//    context.paintChild(
-//        0, transform: new Matrix4.diagonal3Values(200.0, 200.0, 200.0));
-    context.paintChild(0, transform: new Matrix4.identity());
-    var _transform = new Matrix4.identity()
-    ..translate(0.0,position.value,20.0);//ToDo<Explore> Does z value has any impact?
-    context.paintChild(1, transform: _transform);
-    _lastPosition = position.value;
+    var _transform1 = new Matrix4.identity()
+      ..translate(0.0, _parallaxTopMargin, 0.0)
+      ..scale(1.3 * position.value / context.size.height,
+          1.3 * position.value / context.size.height, 1.0)
+      ..translate(-context
+          .getChildSize(0)
+          .width / 5.3, 0.0);
+    context.paintChild(0, transform: _transform1);
+    var _transform2 = new Matrix4.identity()
+      ..translate(0.0, _bodyTopMargin,
+          0.0); //ToDo<Explore> Does z value has any impact?
+    context.paintChild(1, transform: _transform2);
   }
 
   @override
