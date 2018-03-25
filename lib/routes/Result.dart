@@ -28,7 +28,7 @@ class ResultState extends State<Result> {
                 .size
                 .height,
             child: new Parallax(
-              //TODO(Enhancement): Initial parallax position?
+              parallaxRatio: 0.5,
               childParallax: new PageView.builder(
                   physics: new AlwaysScrollableScrollPhysics(),
                   controller: _controller,

@@ -5,10 +5,10 @@ import 'package:flutter/physics.dart';
 class Parallax extends StatefulWidget {
   final Widget childParallax;
   final Widget childBody;
-  final double heightParallaxAtStarting;
+  final double parallaxRatio;
 
   Parallax({@required this.childParallax, @required this.childBody,
-    Key key, this.heightParallaxAtStarting = 200.0}) : super(key: key);
+    Key key, this.parallaxRatio = 0.3}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => new ParallaxState();
@@ -64,11 +64,14 @@ class ParallaxState extends State<Parallax>
       vsync: this,
     );
     _animation =
-        new Tween<double>(begin: 100.0, end: 30.0).animate(
+        new Tween<double>(begin: 0.0, end: 100 * widget.parallaxRatio)
+            .animate(
             _animationController);
 
     _positionNotifier = new ValueNotifier<double>(0.0);
-    _flowDelegate = new ParallaxFlowDelegate(position: _positionNotifier);
+    _flowDelegate = new ParallaxFlowDelegate(
+        positionNotifier: _positionNotifier,
+        parallaxRatio: widget.parallaxRatio);
     _animation.addListener(_onAnimationValueChanged);
     _animationController.animateWith(
         new SpringSimulation(new SpringDescription.withDampingRatio(
@@ -81,10 +84,12 @@ class ParallaxState extends State<Parallax>
 
 class ParallaxFlowDelegate extends FlowDelegate {
 
-  ValueNotifier<double> position;
+  ValueNotifier<double> positionNotifier;
+  double parallaxRatio;
 
   ///  Listens to the notifications from `position`.
-  ParallaxFlowDelegate({this.position}) : super(repaint: position);
+  ParallaxFlowDelegate({this.positionNotifier, this.parallaxRatio})
+      : super(repaint: positionNotifier);
 
   @override
   BoxConstraints getConstraintsForChild(int i, BoxConstraints constraints) {
@@ -98,34 +103,35 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
   @override
   void paintChildren(FlowPaintingContext context) {
-    if(position.value > context.size.height)
-      position.value = context.size.height;
-    if(position.value < 0.0)
-      position.value = 0.0;
+    if (positionNotifier.value > context.size.height)
+      positionNotifier.value = context.size.height;
+    if (positionNotifier.value < 0.0)
+      positionNotifier.value = 0.0;
 
-    double positionRatio = position.value / context.size.height;
-    _paintParallax(context,positionRatio);
-    _paintBody(context,positionRatio);
+    double positionRatio = positionNotifier.value / context.size.height;
+    _paintParallax(context, positionRatio);
+    _paintBody(context, positionRatio);
   }
 
   void _paintParallax(FlowPaintingContext context, double positionRatio) {
-    double childHeight = context
-        .getChildSize(0)
-        .height;
-    double space = position.value;
+    var transform = new Matrix4.identity();
 
-    var _transform1 = new Matrix4.identity()
-      ..scale(space / (childHeight),
-          space / (childHeight), 1.0);
+    if (positionRatio > parallaxRatio) {
+      transform.scale(positionNotifier.value / context.size.height,
+          positionNotifier.value / context.size.height, 1.0);
+    }
+    else {
+      transform.scale(parallaxRatio, parallaxRatio, 1.0);
+    }
 
-    context.paintChild(0, transform: _transform1);
+    context.paintChild(0, transform: transform);
   }
 
   void _paintBody(FlowPaintingContext context, double positionRatio) {
-    var _transform2 = new Matrix4.identity()
-      ..translate(0.0, position.value,
+    var transform = new Matrix4.identity()
+      ..translate(0.0, positionNotifier.value,
           0.0); //TODO(Explore):Does z value has any impact?
-    context.paintChild(1, transform: _transform2);
+    context.paintChild(1, transform: transform);
   }
 
   @override
