@@ -22,42 +22,44 @@ class ResultState extends State<Result> {
     return new Scaffold(
       body: new Container(
         child: new Center(
-          child: new Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              new Parallax(
-                  new PageView.builder(
-                    physics: new AlwaysScrollableScrollPhysics(),
-                    controller: _controller,
-                    itemBuilder: (context, index) {
-                      return new ConstrainedBox(
-                        constraints: const BoxConstraints.expand(),
-                        child: new FlutterLogo(colors: Colors.blue,),
-                      );
-                    },
-                  ),
-                  new Column(
-                    children: <Widget>[
-                      new Container(
-                        child: new Row(
-                          children: <Widget>[
-                            new Expanded(
-                              child: new TitleBar(title: widget.word),
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Container(
-                        margin: new EdgeInsets.only(
-                          top: 20.0,
-                          left: 100.0,
-                        ),
-                        child: new Definitions(word: widget.word),
-                      ),
-                    ],
-                  )
+          child: new SizedBox(
+            height: MediaQuery
+                .of(context)
+                .size
+                .height / 2,
+            child: new Parallax(
+              heightParallaxAtStarting: 400.0,
+              childParallax: new PageView.builder(
+                physics: new AlwaysScrollableScrollPhysics(),
+                controller: _controller,
+                itemBuilder: (context, index) {
+                  return new ConstrainedBox(
+                    constraints: const BoxConstraints.expand(),
+                    child: new FlutterLogo(colors: Colors.blue,),
+                  );
+                },
               ),
-            ],
+              childBody: new Column(
+                children: <Widget>[
+                  new Container(
+                    child: new Row(
+                      children: <Widget>[
+                        new Expanded(
+                          child: new TitleBar(title: widget.word),
+                        ),
+                      ],
+                    ),
+                  ),
+                  new Container(
+                    margin: new EdgeInsets.only(
+                      top: 20.0,
+                      left: 100.0,
+                    ),
+                    child: new Definitions(word: widget.word),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -7,7 +7,9 @@ import 'package:myapp/routes/Home.dart';
 import 'package:myapp/routes/Result.dart';
 import 'package:myapp/routes/Search.dart';
 
-//ToDo:<Infra> Install markdown plugin (https://plugins.jetbrains.com/plugin/7701-gfm)
+//ToDo:<Infra> Install markdown plugin (https://plugins.jetbrains.com/plugin/7701-gfm)(markdown support?)
+//ToDo:<Explore> framework.dart
+//ToDo:<Explore> transitions.dart
 void main() {
   //Run app
   runApp(myApp());
