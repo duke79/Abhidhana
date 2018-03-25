@@ -31,15 +31,54 @@ class ParallaxState extends State<Parallax>
   ValueNotifier<double> _positionNotifier;
   double _animationEnd;
 
-  double get _bottomWidgetHeight => widget.bottomWidget.currentContext.size.height;
+  double get _bottomWidgetHeight =>
+      widget.bottomWidget.currentContext.size.height;
+
   double get _parallaxPosition => widget.parallaxRatio * _contextHeight;
+
   double get _contextHeight => context.size.height;
+
   double get _bottomWidgetPosition => _contextHeight - _bottomWidgetHeight;
+
   double get _currentPosition => _positionNotifier.value;
+
   double get _currentAnimationPoint => 100 * _currentPosition / _contextHeight;
-  double get _parallaxAnimationPoint => 100 * _parallaxPosition / _contextHeight;
-  double get _bottomAnimationPoint => 100.0;//100 * _bottomWidgetPosition / _contextHeight;
+
+  double get _parallaxAnimationPoint =>
+      100 * _parallaxPosition / _contextHeight;
+
   double get _topAnimationPoint => 0.0;
+
+  double get _bottomAnimationPoint =>
+      100.0; //100 * _bottomWidgetPosition / _contextHeight;
+
+  bool get _bAtTop => _currentPosition == 0.0;
+
+  bool get _bAboveMidParallax {
+    return _currentPosition > 0.0
+        && _currentPosition < ((_parallaxPosition) / 2);
+  }
+
+  bool get _bBelowMidParraxAboveParallax {
+    return _currentPosition > ((_parallaxPosition) / 2)
+        && _currentPosition < _parallaxPosition;
+  }
+
+  bool get _bAtParallax => _currentPosition == _parallaxPosition;
+
+  bool get _bBelowParallaxAboveTheHalfwayBetweenParallaAndBottom {
+    return _currentPosition > _parallaxPosition
+        && _currentPosition <
+            _parallaxPosition + (_bottomWidgetPosition - _parallaxPosition) / 2;
+  }
+
+  bool get _bBelowParallaxBelowTheHalfwayBetweenParallaAndBottom {
+    return _currentPosition >
+        _parallaxPosition + (_bottomWidgetPosition - _parallaxPosition) / 2
+        && _currentPosition < _bottomWidgetPosition;
+  }
+
+  bool get _bAtBottom => _currentPosition == _bottomWidgetPosition;
 
   set _currentPosition(double value) => _positionNotifier.value = value;
 
@@ -121,42 +160,38 @@ class ParallaxState extends State<Parallax>
   }
 
   void _onDragEnd(DragEndDetails details) {
-    if (_currentPosition == 0.0
-        || _currentPosition == _parallaxPosition
-        || _currentPosition == _bottomWidgetPosition)
+    if (_bAtTop || _bAtParallax || _bAtBottom)
       return;
 
-    if (_currentPosition > 0.0
-        && _currentPosition < ((_parallaxPosition) / 2))
+    if (_bAboveMidParallax)
       _initAnimation(begin: _currentAnimationPoint,
           end: _topAnimationPoint);
 
-    if (_currentPosition > (_parallaxPosition) / 2
-        && _currentPosition < _parallaxPosition)
+    if (_bBelowMidParraxAboveParallax)
       _initAnimation(begin: _currentAnimationPoint,
           end: _parallaxAnimationPoint);
 
-    if (_currentPosition > _parallaxPosition
-        && _currentPosition < _parallaxPosition + (_bottomWidgetPosition - _parallaxPosition)/2)
+    if (_bBelowParallaxAboveTheHalfwayBetweenParallaAndBottom)
       _initAnimation(begin: _currentAnimationPoint,
           end: _parallaxAnimationPoint);
 
-    if (_currentPosition > _parallaxPosition + (_bottomWidgetPosition - _parallaxPosition)/2
-    && _currentPosition < _bottomWidgetPosition)
+    if (_bBelowParallaxBelowTheHalfwayBetweenParallaAndBottom)
       _initAnimation(begin: _currentAnimationPoint,
           end: _bottomAnimationPoint);
   }
 
   void _onTap() {
-    if (_currentPosition == 0.0) {
-      _initAnimation(begin: _topAnimationPoint, end: widget.parallaxRatio * 100);
+    if (_bAtTop) {
+      _initAnimation(
+          begin: _topAnimationPoint, end: _parallaxAnimationPoint);
     }
-    if (_currentPosition == _parallaxPosition) {
+    if (_bAtParallax) {
       _initAnimation(begin: _currentAnimationPoint,
           end: _bottomAnimationPoint);
     }
-    if (_currentPosition == _bottomWidgetPosition) {
-      _initAnimation(begin: _bottomAnimationPoint, end: _parallaxAnimationPoint);
+    if (_bAtBottom) {
+      _initAnimation(
+          begin: _bottomAnimationPoint, end: _parallaxAnimationPoint);
     }
   }
 }
