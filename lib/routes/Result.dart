@@ -28,9 +28,8 @@ class ResultState extends State<Result> {
                 .size
                 .height,
             child: new Parallax(
-              childParallax: new Container(
-                height: 400.0,
-                child: new PageView.builder(
+              //TODO(Enhancement): Initial parallax position?
+              childParallax: new PageView.builder(
                   physics: new AlwaysScrollableScrollPhysics(),
                   controller: _controller,
                   itemBuilder: (context, index) {
@@ -39,7 +38,6 @@ class ResultState extends State<Result> {
                       child: new FlutterLogo(colors: Colors.blue,),
                     );
                   },
-                ),
               ),
               childBody: new Column(
                 children: <Widget>[
@@ -70,8 +68,8 @@ class ResultState extends State<Result> {
 }
 
 //This route shows the word definition.
-//ToDo:<Enhancement> Scroll for the content, absolutely required once the tile reaches the top.
-//ToDo:<Issue> Touch disambiguation? for the above mentioned scroll, since drag must work even
+//TODO(Enhancement): Scroll for the content, absolutely required once the tile reaches the top.
+//TODO(Issue): Touch disambiguation? for the above mentioned scroll, since drag must work even
 // if the title hasn't reached the top.
 class Result extends StatefulWidget {
   Result({Key key, this.word}) : super(key: key);

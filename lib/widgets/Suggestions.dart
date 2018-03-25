@@ -21,7 +21,7 @@ class Suggestions extends State<SuggestionsView> {
       for (i = 0; (i < suggestions.length) && (i < 10); i++) {
         _suggestions.add(suggestions.elementAt(i));
         _keyAnimatedList.currentState
-            .setState(() { //Todo:<Review> Does setState has any impact?
+            .setState(() { //TODO(Review): Does setState has any impact?
           _keyAnimatedList.currentState.insertItem(i);
         });
       }

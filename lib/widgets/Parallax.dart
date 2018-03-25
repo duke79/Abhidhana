@@ -83,18 +83,6 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
   ValueNotifier<double> position;
 
-  double get _parallaxTopMargin {
-    return position.value / 3;
-  }
-
-  double get _parallaxHeight {
-    return position.value / 2;
-  }
-
-  double get _bodyTopMargin {
-    return position.value;
-  }
-
   ///  Listens to the notifications from `position`.
   ParallaxFlowDelegate({this.position}) : super(repaint: position);
 
@@ -110,28 +98,38 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
   @override
   void paintChildren(FlowPaintingContext context) {
+    if(position.value > context.size.height)
+      position.value = context.size.height;
+    if(position.value < 0.0)
+      position.value = 0.0;
+
+    double positionRatio = position.value / context.size.height;
+    _paintParallax(context,positionRatio);
+    _paintBody(context,positionRatio);
+  }
+
+  void _paintParallax(FlowPaintingContext context, double positionRatio) {
+    double childHeight = context
+        .getChildSize(0)
+        .height;
+    double space = position.value;
+
     var _transform1 = new Matrix4.identity()
-      ..translate(0.0, _parallaxTopMargin, 0.0)
-      ..scale(1.3 * position.value / context.size.height,
-          1.3 * position.value / context.size.height, 1.0)
-      ..translate(-context
-          .getChildSize(0)
-          .width / 5.3, 0.0);
+      ..scale(space / (childHeight),
+          space / (childHeight), 1.0);
+
     context.paintChild(0, transform: _transform1);
+  }
+
+  void _paintBody(FlowPaintingContext context, double positionRatio) {
     var _transform2 = new Matrix4.identity()
-      ..translate(0.0, _bodyTopMargin,
-          0.0); //ToDo<Explore> Does z value has any impact?
+      ..translate(0.0, position.value,
+          0.0); //TODO(Explore):Does z value has any impact?
     context.paintChild(1, transform: _transform2);
   }
 
   @override
-  bool shouldRelayout(ParallaxFlowDelegate oldDelegate) {
+  bool shouldRepaint(FlowDelegate oldDelegate) {
     return false;
   }
-
-  @override
-  bool shouldRepaint(ParallaxFlowDelegate oldDelegate) {
-    return oldDelegate.position.value != position.value;
-  }
-
 }
