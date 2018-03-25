@@ -69,7 +69,7 @@ class ParallaxState extends State<Parallax>
     _animation.addListener(_onAnimationValueChanged);
     _animationController.animateWith(
         new SpringSimulation(new SpringDescription.withDampingRatio(
-            mass: 2.0,
+            mass: 20.0,
             stiffness: 2.0,
             ratio: 1.0
         ), 0.0, 1.0, 1.0));
@@ -120,7 +120,7 @@ class ParallaxFlowDelegate extends FlowDelegate {
 //        0, transform: new Matrix4.diagonal3Values(200.0, 200.0, 200.0));
     context.paintChild(0, transform: new Matrix4.identity());
     var _transform = new Matrix4.identity()
-    ..translate(0.0,position.value,20.0);
+    ..translate(0.0,position.value,20.0);//ToDo<Explore> Does z value has any impact?
     context.paintChild(1, transform: _transform);
     _lastPosition = position.value;
   }
