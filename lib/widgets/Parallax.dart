@@ -18,80 +18,89 @@ class ParallaxState extends State<Parallax>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<num> _animation;
-  Offset _dragDelta = new Offset(0.0, 0.0);
   FlowDelegate _flowDelegate;
+  ValueNotifier<double> _positionNotifier;
+  Size _screenSize;
 
   @override
   void initState() {
-    _animationController = new AnimationController(
-      duration: const Duration(seconds: 20),
-      vsync: this,
-    );
-    _animation =
-        new Tween(begin: 600.0, end: 0.0).animate(_animationController);
-//    _animation.addListener(() {
-//      setState(() => null);
-//    });
-    _flowDelegate = new ParallaxFlowDelegate(repaint: _animation);
-    _animationController.animateWith(
-        new SpringSimulation(new SpringDescription.withDampingRatio(
-            mass: 200.0,
-            stiffness: 2.0,
-            ratio: 1.0
-        ), 0.0, 1.0, 1.0));
+    _initAnimation();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var _parallaxTopMargin = _animation.value.toDouble() / 2 +
-        _dragDelta.dy / 4;
-    var _parallaxHeight = _animation.value.toDouble() / 2 +
-        widget.heightParallaxAtStarting +
-        _dragDelta.dy / 2;
-    var _bodyTopMargin = (1.5 * _animation.value.toDouble()) +
-        widget.heightParallaxAtStarting +
-        _dragDelta.dy;
-
-    _parallaxTopMargin = _parallaxTopMargin > 0.0 ? _parallaxTopMargin : 0.0;
-    _parallaxHeight =
-    _parallaxHeight > widget.heightParallaxAtStarting ? _parallaxHeight : widget
-        .heightParallaxAtStarting;
-    _bodyTopMargin = _bodyTopMargin > 0.0 ? _bodyTopMargin : 0.0;
-
+    _screenSize = MediaQuery.of(context).size;
     return new Flow(
       delegate: _flowDelegate,
       children: <Widget>[
-        new Container(
-          margin: new EdgeInsets.only(top: _parallaxTopMargin,),
-          height: _parallaxHeight,
-          child: new GestureDetector(
-            onVerticalDragUpdate: _onVerticalDragUpdate,
-            child: widget.childParallax,
-          ),
+        new GestureDetector(
+          onVerticalDragUpdate: _onVerticalDragUpdate,
+          child: widget.childParallax,
         ),
         new GestureDetector(
           onVerticalDragUpdate: _onVerticalDragUpdate,
-          child: new Container(
-            margin: new EdgeInsets.only(
-              top: _bodyTopMargin,
-            ),
-            child: widget.childBody,
-          ),
+          child: widget.childBody,
         ),
       ],
     );
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) {
-    setState(() {
-      _dragDelta += details.delta;
-    });
+    _positionNotifier.value += details.delta.dy;
+  }
+
+  void _onAnimationValueChanged(){
+    if(null != _screenSize)
+      _positionNotifier.value = _animation.value.toDouble()*_screenSize.height/100;
+  }
+
+  void _initAnimation() {
+    _animationController = new AnimationController(
+      duration: const Duration(seconds: 20),
+      vsync: this,
+    );
+    _animation =
+        new Tween<double>(begin: 100.0, end: 30.0).animate(
+            _animationController);
+
+    _positionNotifier = new ValueNotifier<double>(0.0);
+    _flowDelegate = new ParallaxFlowDelegate(position: _positionNotifier);
+    _animation.addListener(_onAnimationValueChanged);
+    _animationController.animateWith(
+        new SpringSimulation(new SpringDescription.withDampingRatio(
+            mass: 2.0,
+            stiffness: 2.0,
+            ratio: 1.0
+        ), 0.0, 1.0, 1.0));
   }
 }
 
 class ParallaxFlowDelegate extends FlowDelegate {
-  ParallaxFlowDelegate({Listenable repaint}) : super(repaint: repaint);
+
+  ValueNotifier<double> position;
+  double _lastPosition;
+
+  double get _parallaxTopMargin {
+    double parallaxTopMargin = (8 * position.value) / 4;
+    parallaxTopMargin = parallaxTopMargin > 0.0 ? parallaxTopMargin : 0.0;
+    return parallaxTopMargin;
+  }
+
+  double get _parallaxHeight {
+    double parallaxHeight = (8 * position.value) / 2;
+    return parallaxHeight;
+  }
+
+  double get _bodyTopMargin {
+    double bodyTopMargin = (8 * position.value);
+    return bodyTopMargin;
+  }
+
+  ///  Listens to the notifications from `position`.
+  ParallaxFlowDelegate({this.position}) : super(repaint: position) {
+    _lastPosition = 0.0;
+  }
 
   @override
   BoxConstraints getConstraintsForChild(int i, BoxConstraints constraints) {
@@ -109,35 +118,21 @@ class ParallaxFlowDelegate extends FlowDelegate {
     int nbrChildren = context.childCount;
 //    context.paintChild(
 //        0, transform: new Matrix4.diagonal3Values(200.0, 200.0, 200.0));
-    List<double> values = new List();
-    values.add(1.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(1.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(1.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(0.0);
-    values.add(0.0);
-    var _transform = new Matrix4.fromList(values);
-    context.paintChild(1, transform: new Matrix4.identity());
+    context.paintChild(0, transform: new Matrix4.identity());
+    var _transform = new Matrix4.identity()
+    ..translate(0.0,position.value,20.0);
+    context.paintChild(1, transform: _transform);
+    _lastPosition = position.value;
   }
 
   @override
-  bool shouldRelayout(FlowDelegate oldDelegate) {
+  bool shouldRelayout(ParallaxFlowDelegate oldDelegate) {
     return false;
   }
 
   @override
-  bool shouldRepaint(FlowDelegate oldDelegate) {
-    return false;
+  bool shouldRepaint(ParallaxFlowDelegate oldDelegate) {
+    return oldDelegate.position.value != position.value;
   }
 
 }

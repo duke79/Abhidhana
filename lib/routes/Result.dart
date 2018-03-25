@@ -26,18 +26,20 @@ class ResultState extends State<Result> {
             height: MediaQuery
                 .of(context)
                 .size
-                .height / 2,
+                .height,
             child: new Parallax(
-              heightParallaxAtStarting: 400.0,
-              childParallax: new PageView.builder(
-                physics: new AlwaysScrollableScrollPhysics(),
-                controller: _controller,
-                itemBuilder: (context, index) {
-                  return new ConstrainedBox(
-                    constraints: const BoxConstraints.expand(),
-                    child: new FlutterLogo(colors: Colors.blue,),
-                  );
-                },
+              childParallax: new Container(
+                height: 400.0,
+                child: new PageView.builder(
+                  physics: new AlwaysScrollableScrollPhysics(),
+                  controller: _controller,
+                  itemBuilder: (context, index) {
+                    return new ConstrainedBox(
+                      constraints: const BoxConstraints.expand(),
+                      child: new FlutterLogo(colors: Colors.blue,),
+                    );
+                  },
+                ),
               ),
               childBody: new Column(
                 children: <Widget>[
