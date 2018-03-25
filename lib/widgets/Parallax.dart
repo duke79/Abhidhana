@@ -2,13 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
+//TODO(Issue): Locked once reches bottom/top. Unable to drag then. (only in release?)
+//TODO(Enahncement): Hide parrallax with body (opacity).
 class Parallax extends StatefulWidget {
   final Widget childParallax;
   final Widget childBody;
   final double parallaxRatio;
+  final GlobalKey bottomWidget;
 
   Parallax({@required this.childParallax, @required this.childBody,
-    Key key, this.parallaxRatio = 0.3}) : super(key: key);
+    Key key, this.parallaxRatio = 0.3, this.bottomWidget}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => new ParallaxState();
@@ -60,7 +63,6 @@ class ParallaxState extends State<Parallax>
 
   void _initAnimation() {
     _animationController = new AnimationController(
-      duration: const Duration(seconds: 20),
       vsync: this,
     );
     _animation =
@@ -70,15 +72,17 @@ class ParallaxState extends State<Parallax>
 
     _positionNotifier = new ValueNotifier<double>(0.0);
     _flowDelegate = new ParallaxFlowDelegate(
-        positionNotifier: _positionNotifier,
-        parallaxRatio: widget.parallaxRatio);
+      positionNotifier: _positionNotifier,
+      parallaxRatio: widget.parallaxRatio,
+      bottomWidget: widget.bottomWidget,
+    );
     _animation.addListener(_onAnimationValueChanged);
     _animationController.animateWith(
         new SpringSimulation(new SpringDescription.withDampingRatio(
             mass: 20.0,
             stiffness: 2.0,
             ratio: 1.0
-        ), 0.0, 1.0, 1.0));
+        ), 0.0, 1.0, 0.5));
   }
 }
 
@@ -86,9 +90,12 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
   ValueNotifier<double> positionNotifier;
   double parallaxRatio;
+  GlobalKey bottomWidget;
 
-  ///  Listens to the notifications from `position`.
-  ParallaxFlowDelegate({this.positionNotifier, this.parallaxRatio})
+  ///  Listens to the notifications from `positionNotifier`.
+  ///  Initial position is set according to the `parallaxRatio`.
+  ParallaxFlowDelegate(
+      {this.positionNotifier, this.parallaxRatio, this.bottomWidget})
       : super(repaint: positionNotifier);
 
   @override
@@ -105,6 +112,13 @@ class ParallaxFlowDelegate extends FlowDelegate {
   void paintChildren(FlowPaintingContext context) {
     if (positionNotifier.value > context.size.height)
       positionNotifier.value = context.size.height;
+    if (bottomWidget != null) {
+      if (positionNotifier.value >
+          context.size.height - bottomWidget.currentContext.size.height) {
+        positionNotifier.value =
+            context.size.height - bottomWidget.currentContext.size.height;
+      }
+    }
     if (positionNotifier.value < 0.0)
       positionNotifier.value = 0.0;
 

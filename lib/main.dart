@@ -8,6 +8,7 @@ import 'package:myapp/routes/Result.dart';
 import 'package:myapp/routes/Search.dart';
 
 //TODO(Infra): Install markdown plugin (https://plugins.jetbrains.com/plugin/7701-gfm)(markdown support?)
+//TODO(Infra): Auto-Generate documentations?
 //TODO(Explore): framework.dart
 //TODO(Explore): transitions.dart
 void main() {

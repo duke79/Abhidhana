@@ -8,6 +8,8 @@ import 'package:myapp/widgets/TitleBar.dart';
 class ResultState extends State<Result> {
   var _controller = new PageController();
 
+  final GlobalKey _titleKey = new GlobalKey();
+
   @override
   void initState() {
   }
@@ -29,35 +31,40 @@ class ResultState extends State<Result> {
                 .height,
             child: new Parallax(
               parallaxRatio: 0.5,
+              bottomWidget: _titleKey,
               childParallax: new PageView.builder(
-                  physics: new AlwaysScrollableScrollPhysics(),
-                  controller: _controller,
-                  itemBuilder: (context, index) {
-                    return new ConstrainedBox(
-                      constraints: const BoxConstraints.expand(),
-                      child: new FlutterLogo(colors: Colors.blue,),
-                    );
-                  },
+                physics: new AlwaysScrollableScrollPhysics(),
+                controller: _controller,
+                itemBuilder: (context, index) {
+                  return new ConstrainedBox(
+                    constraints: const BoxConstraints.expand(),
+                    child: new FlutterLogo(colors: Colors.blue,),
+                  );
+                },
               ),
-              childBody: new Column(
-                children: <Widget>[
-                  new Container(
-                    child: new Row(
-                      children: <Widget>[
-                        new Expanded(
-                          child: new TitleBar(title: widget.word),
-                        ),
-                      ],
+              childBody: new Container(
+                color: Colors.white,
+                child: new Column(
+                  children: <Widget>[
+                    new Container(
+                      key : _titleKey,
+                      child: new Row(
+                        children: <Widget>[
+                          new Expanded(
+                            child: new TitleBar(title: widget.word),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  new Container(
-                    margin: new EdgeInsets.only(
-                      top: 20.0,
-                      left: 100.0,
+                    new Container(
+                      margin: new EdgeInsets.only(
+                        top: 20.0,
+                        left: 100.0,
+                      ),
+                      child: new Definitions(word: widget.word),
                     ),
-                    child: new Definitions(word: widget.word),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
