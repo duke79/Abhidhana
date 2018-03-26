@@ -11,6 +11,8 @@ import 'package:myapp/routes/Search.dart';
 //TODO(Infra): Auto-Generate documentations?
 //TODO(Explore): framework.dart
 //TODO(Explore): transitions.dart
+//TODO(Explore): ImplicitlyAnimatedWidget & subclasses
+//TODO(Explore): SingleChildRenderObjectWidget subclasses
 void main() {
   //Run app
   runApp(myApp());

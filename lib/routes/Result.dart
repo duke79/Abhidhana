@@ -46,15 +46,9 @@ class ResultState extends State<Result> {
           color: Colors.white,
           child: new Column(
             children: <Widget>[
-              new Container(
+              new TitleBar(
                 key: _titleKey,
-                child: new Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: new TitleBar(title: widget.word),
-                    ),
-                  ],
-                ),
+                title: widget.word,
               ),
               new Container(
                 margin: new EdgeInsets.only(
