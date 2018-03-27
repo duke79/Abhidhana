@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:myapp/widgets/Definitions.dart';
 import 'package:myapp/widgets/Parallax.dart';
 import 'package:myapp/widgets/TitleBar.dart';
+import 'package:myapp/widgets/TitleBarWithFAB.dart';
 
 class ResultState extends State<Result> {
   var _controller = new PageController();
@@ -46,9 +47,10 @@ class ResultState extends State<Result> {
           color: Colors.white,
           child: new Column(
             children: <Widget>[
-              new TitleBar(
+              new TitleBarWithFAB(
                 key: _titleKey,
                 title: widget.word,
+                onFABPressed: _onFABPressed,
               ),
               new Container(
                 margin: new EdgeInsets.only(
@@ -62,6 +64,10 @@ class ResultState extends State<Result> {
         ),
       ),
     );
+  }
+
+  void _onFABPressed() {
+    print("_onFABPressed");//TODO: Remove this line
   }
 }
 

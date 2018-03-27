@@ -255,7 +255,6 @@ class ParallaxFlowDelegate extends FlowDelegate {
 
   /// Asks for the size constraints of the [Parallax] widget, called once in the beginning.
   /// There were some issues related to inifinite height etc. but got fixed whe a [SizedBox] was introduced as an ancestor for [Parallax].
-  //TODO(Issue): There's still some white space left at the bottom of the screen, which means [Parallax] doesn't expand over the full height of the screen. This issue might need fixing.
   @override
   Size getSize(BoxConstraints constraints) {
     return constraints.biggest;
