@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp/widgets/Definitions.dart';
 import 'package:myapp/widgets/Parallax.dart';
-import 'package:myapp/widgets/TitleBar.dart';
 import 'package:myapp/widgets/TitleBarWithFAB.dart';
+import 'package:tts/tts.dart';
 
 class ResultState extends State<Result> {
   var _controller = new PageController();
@@ -66,8 +67,14 @@ class ResultState extends State<Result> {
     );
   }
 
-  void _onFABPressed() {
-    print("_onFABPressed");//TODO: Remove this line
+  /*Future */
+  _onFABPressed() /*async */ {
+/*    var languages = await Tts.getAvailableLanguages();*/
+    Tts.setLanguage("en-US");
+/*    for(var language in languages){
+      Tts.setLanguage(language);
+    }*/
+    Tts.speak(widget.word);
   }
 }
 
