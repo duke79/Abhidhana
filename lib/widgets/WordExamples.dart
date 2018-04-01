@@ -1,27 +1,31 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:myapp/data/Examples.dart';
 
-class WordExamples extends StatelessWidget {
+class WordExamples extends StatefulWidget {
   final String word;
-  List<String> _examples;
 
   WordExamples(this.word, {Key key}) :super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-//    _tabController = new TabController(vsync: this, length: 5);
-    return new StatefulBuilder(builder: wordExamplesBuilder);
-  }
+  State<StatefulWidget> createState() => new WordExamplesState();
+}
 
-  Widget wordExamplesBuilder(BuildContext context, StateSetter setState) {
-    Examples.getExamples(word).then((examples) {
+class WordExamplesState extends State<WordExamples>{
+  List<String> _examples;
+  var _controller = new PageController(); //no use as of now
+
+  @override
+  void initState() {
+    Examples.getExamples(widget.word).then((examples) {
       setState(() => _examples = examples);
     });
+    super.initState();
+  }
 
-    var _controller = new PageController(); //no use as of now
+
+  @override
+  Widget build(BuildContext context) {
     return _examples == null ?
     new CircularProgressIndicator()
         : new PageView.builder(
@@ -36,5 +40,4 @@ class WordExamples extends StatelessWidget {
       },
     );
   }
-
 }
