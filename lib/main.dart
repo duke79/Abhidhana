@@ -24,6 +24,7 @@ void main() {
 //TODO(Enhancement): Search Route (partially done)
 //TODO(Enhancement): Result Route (partially done)
 //TODO(Enhancement): Preference Route (not yet started)
+//TODO(Enhancement): Double back tap to exit?
 Widget myApp() {
   return new MaterialApp(
     title: Strings.app_title,
