@@ -245,6 +245,13 @@ class ParallaxFlowDelegate extends FlowDelegate {
   /// Doesn't have an impact right now, won't matter if it's not overridden altogether.
   @override
   BoxConstraints getConstraintsForChild(int i, BoxConstraints constraints) {
+    if (i == 0)
+      return new BoxConstraints(
+        minWidth: constraints.minWidth,
+        maxWidth: constraints.maxWidth,
+        minHeight: constraints.minHeight,
+        maxHeight: parallaxRatio * constraints.maxHeight,
+      );
     return constraints.loosen();
   }
 
@@ -280,15 +287,26 @@ class ParallaxFlowDelegate extends FlowDelegate {
   void _paintParallax(FlowPaintingContext context, double positionRatio) {
     var transform = new Matrix4.identity();
 
-    if (positionRatio > parallaxRatio) {
-      transform.scale(positionNotifier.value / context.size.height,
-          positionNotifier.value / context.size.height, 1.0);
-    }
-    else {
-      transform.scale(parallaxRatio, parallaxRatio, 1.0);
-    }
+    var viewportHeight = context.size.height;
+    var viewportWidth = context.size.width;
 
-    context.paintChild(0, transform: transform);
+    var availableHeight = positionNotifier.value;
+    var ratioWithParent = 0.0;
+    if (positionRatio > parallaxRatio)
+      ratioWithParent = availableHeight /
+          (viewportHeight - bottomWidget.currentContext.size.height);
+    else
+      ratioWithParent = parallaxRatio;
+    var availableWidth = viewportWidth;
+
+    var horizontalOffset = 0.0;
+    var verticalOffset = 0.0;
+
+    verticalOffset = (availableHeight * ratioWithParent) / 4;
+
+    transform.translate(horizontalOffset, verticalOffset);
+
+    context.paintChild(0, transform: transform,);
   }
 
   /// Handles the painting for Body. [ParallaxFlowDelegate._paintParallax] takes care of the Parallax.

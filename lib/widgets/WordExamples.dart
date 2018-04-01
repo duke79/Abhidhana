@@ -35,7 +35,7 @@ class WordExamplesState extends State<WordExamples>{
       itemBuilder: (context, index) {
         return new ConstrainedBox(
           constraints: const BoxConstraints.expand(),
-          child: new Text(_examples[index]),
+          child: new Text(_examples[index],textScaleFactor: 2.0,),
         );
       },
     );
