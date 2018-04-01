@@ -108,11 +108,6 @@ class ParallaxState extends State<Parallax>
     return new Flow(
       delegate: _flowDelegate,
       children: <Widget>[
-        //TODO(Enhancement): Handle flings.
-        //Fling candidates knows at the moment -
-        // 1. If bottom position and _bottomWidget is tapped.
-        // 2. If user drags and leaves at some random position (apart form top, bottom and parallaxRatio position).
-        // 3. If the top position and _bottomWidget is tapped.
         new GestureDetector(
           onVerticalDragUpdate: _onVerticalDragUpdate,
           onVerticalDragEnd: _onDragEnd,

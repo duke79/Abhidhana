@@ -34,10 +34,6 @@ class SearchViewState extends State<SearchBar> {
   SearchViewState();
 
   @override
-  void didUpdateWidget(SearchBar oldWidget) {
-  }
-
-  @override
   Widget build(BuildContext context) {
     Widget ret = new Stack(
         alignment: const Alignment(1.0, 1.0),

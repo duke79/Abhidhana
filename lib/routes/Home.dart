@@ -22,11 +22,10 @@ class HomeState extends State<Home>
     with SingleTickerProviderStateMixin {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  TabController _tabController;
 
   @override
   void initState() {
-    _tabController = new TabController(vsync: this, length: 5);
+    super.initState();
   }
 
   @override
