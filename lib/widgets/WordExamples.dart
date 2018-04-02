@@ -11,7 +11,7 @@ class WordExamples extends StatefulWidget {
   State<StatefulWidget> createState() => new WordExamplesState();
 }
 
-class WordExamplesState extends State<WordExamples>{
+class WordExamplesState extends State<WordExamples> {
   List<String> _examples;
   var _controller = new PageController(); //no use as of now
 
@@ -35,7 +35,10 @@ class WordExamplesState extends State<WordExamples>{
       itemBuilder: (context, index) {
         return new ConstrainedBox(
           constraints: const BoxConstraints.expand(),
-          child: new Text(_examples[index],textScaleFactor: 2.0,),
+          child: new SingleChildScrollView(
+            child: new Text(_examples[index], textScaleFactor: 2.0,),
+            scrollDirection: Axis.vertical,
+          ),
         );
       },
     );

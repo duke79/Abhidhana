@@ -22,6 +22,7 @@ class ResultState extends State<Result> {
     /*Hide StatusBar (top) & Android buttons (bottom)
   https://stackoverflow.com/a/43879271/9404410*/
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    var scrollController = new ScrollController();
 
     return new Scaffold(
       // May use SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]), but it didn't work the last time. :(
@@ -33,6 +34,7 @@ class ResultState extends State<Result> {
       body: new Parallax(
         parallaxRatio: 0.5,
         bottomWidget: _titleKey,
+        bodyScrollController: scrollController,
         childParallax: new WordExamples(widget.word),
         childBody: new Container(
           color: Colors.white,
@@ -44,12 +46,15 @@ class ResultState extends State<Result> {
                 title: widget.word,
                 onFABPressed: _onFABPressed,
               ),
-              new Container(
-                margin: new EdgeInsets.only(
-                  top: 20.0,
-                  left: 100.0,
+              new SingleChildScrollView(
+                child: new Container(
+                  margin: new EdgeInsets.only(
+                    top: 20.0,
+                    left: 100.0,
+                  ),
+                  child: new Definitions(word: widget.word),
                 ),
-                child: new Definitions(word: widget.word),
+                controller: scrollController,
               ),
             ],
           ),

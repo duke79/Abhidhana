@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
@@ -8,6 +9,7 @@ class Parallax extends StatefulWidget {
   final Widget childBody;
   final double parallaxRatio;
   final GlobalKey bottomWidget;
+  ScrollController bodyScrollController;
 
   /// A back ground color must be set for the [childBody], if [childParallax] is visible while overlapped by [childBody]. Example -
   ///
@@ -16,8 +18,10 @@ class Parallax extends StatefulWidget {
   /// ```childBody: new Container(
   ///        color: Colors.white,
   /// ```
-  Parallax({@required this.childParallax, @required this.childBody,
-    Key key, this.parallaxRatio = 0.3, this.bottomWidget}) : super(key: key);
+  Parallax(
+      {@required this.childParallax, @required this.childBody, this.bodyScrollController,
+        Key key, this.parallaxRatio = 0.3, this.bottomWidget})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => new ParallaxState();
@@ -52,7 +56,7 @@ class ParallaxState extends State<Parallax>
   double get _bottomAnimationPoint =>
       100.0; //100 * _bottomWidgetPosition / _contextHeight;
 
-  bool get _bAtTop => _currentPosition == 0.0;
+  bool get _bAtTop => _currentPosition <= 0.0;
 
   bool get _bInFirstQuarter {
     return _currentPosition > 0.0
@@ -78,7 +82,7 @@ class ParallaxState extends State<Parallax>
         && _currentPosition < _bottomWidgetPosition;
   }
 
-  bool get _bAtBottom => _currentPosition == _bottomWidgetPosition;
+  bool get _bAtBottom => _currentPosition >= _bottomWidgetPosition;
 
   num get _velocityThreshold => 200.0;
 
@@ -118,6 +122,7 @@ class ParallaxState extends State<Parallax>
           onVerticalDragEnd: _onDragEnd,
           onTap: _onTap,
           child: widget.childBody,
+          behavior: HitTestBehavior.translucent,
         ),
       ],
     );
@@ -154,6 +159,10 @@ class ParallaxState extends State<Parallax>
   ///  [_flowDelegate] takes care of repositioning the children.
   void _onVerticalDragUpdate(DragUpdateDetails details) {
     _currentPosition += details.delta.dy;
+    if (_bAtTop) {
+      widget.bodyScrollController.jumpTo(widget.bodyScrollController.offset
+          - details.delta.dy);
+    }
   }
 
   //TODO(Enhancement): Increase fling velocity as per the velocity at drag end?
@@ -266,6 +275,7 @@ class ParallaxFlowDelegate extends FlowDelegate {
   /// All we need to from here is provide a [Matrix4] to the [context], to position/scale each child.
   @override
   void paintChildren(FlowPaintingContext context) {
+    debugPrintGestureArenaDiagnostics = true;
     if (positionNotifier.value > context.size.height)
       positionNotifier.value = context.size.height;
     if (bottomWidget != null) {
