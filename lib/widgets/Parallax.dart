@@ -158,10 +158,17 @@ class ParallaxState extends State<Parallax>
   ///  Updates the value of _positionNotifier, which in turn notifies the [_flowDelegate].
   ///  [_flowDelegate] takes care of repositioning the children.
   void _onVerticalDragUpdate(DragUpdateDetails details) {
-    _currentPosition += details.delta.dy;
-    if (_bAtTop) {
-      widget.bodyScrollController.jumpTo(widget.bodyScrollController.offset
-          - details.delta.dy);
+    if (details.delta.dy != 0.0) {
+      double scrollPosition = widget.bodyScrollController.offset
+          - details.delta.dy;
+
+      if (_bAtTop && scrollPosition >= 0.0) {
+        widget.bodyScrollController.jumpTo(scrollPosition);
+      }
+      else {
+        _currentPosition += details.delta.dy;
+        widget.bodyScrollController.jumpTo(0.0);
+      }
     }
   }
 
