@@ -161,13 +161,19 @@ class ParallaxState extends State<Parallax>
     if (details.delta.dy != 0.0) {
       double scrollPosition = widget.bodyScrollController.offset
           - details.delta.dy;
+      double maxScroll = widget.bodyScrollController.position
+          .viewportDimension -
+          (context.size.height -
+              widget.bottomWidget.currentContext.size.height);
 
-      if (_bAtTop && scrollPosition >= 0.0) {
-        widget.bodyScrollController.jumpTo(scrollPosition);
+      if (_bAtTop && scrollPosition >= 0.0 && scrollPosition <= maxScroll) {
+        widget.bodyScrollController.position.jumpToWithoutSettling(
+            scrollPosition);
       }
       else {
         _currentPosition += details.delta.dy;
-        widget.bodyScrollController.jumpTo(0.0);
+        if (details.delta.dy > 0.0)
+          widget.bodyScrollController.jumpTo(0.0);
       }
     }
   }
