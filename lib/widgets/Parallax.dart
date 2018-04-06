@@ -35,6 +35,14 @@ class ParallaxState extends State<Parallax>
   ValueNotifier<double> _positionNotifier;
   double _animationEnd;
 
+  bool _bodyScrollGoingOn = false;
+
+  double get _maxScroll =>
+      widget.bodyScrollController.position
+          .viewportDimension -
+          (context.size.height -
+              widget.bottomWidget.currentContext.size.height);
+
   double get _bottomWidgetHeight =>
       widget.bottomWidget.currentContext.size.height;
 
@@ -132,10 +140,25 @@ class ParallaxState extends State<Parallax>
   /// Updates the value of _positionNotifier, which in turn notifies the [_flowDelegate].
   ///  [_flowDelegate] takes care of repositioning the children.
   void _onAnimationValueChanged() {
-    if (_animationEnd == _animation.value.toDouble())
+    if (_bodyScrollGoingOn || widget.bodyScrollController.offset > 0) {
+      double scrollPosition = widget.bodyScrollController.offset -
+          _animation.value.toDouble() / 20;
+      if (scrollPosition < 0.0)
+        scrollPosition = 0.0;
+      if (scrollPosition >= _maxScroll)
+        scrollPosition = _maxScroll;
+      widget.bodyScrollController.position.jumpToWithoutSettling(
+          scrollPosition);
+    }
+    else {
+      _currentPosition =
+          _animation.value.toDouble() * _contextHeight / 100;
+    }
+
+    if (_animationEnd == _animation.value.toDouble()) {
       _animation.removeListener(_onAnimationValueChanged);
-    _currentPosition =
-        _animation.value.toDouble() * _contextHeight / 100;
+      _bodyScrollGoingOn = false;
+    }
   }
 
   void _initAnimation(
@@ -161,12 +184,8 @@ class ParallaxState extends State<Parallax>
     if (details.delta.dy != 0.0) {
       double scrollPosition = widget.bodyScrollController.offset
           - details.delta.dy;
-      double maxScroll = widget.bodyScrollController.position
-          .viewportDimension -
-          (context.size.height -
-              widget.bottomWidget.currentContext.size.height);
 
-      if (_bAtTop && scrollPosition >= 0.0 && scrollPosition <= maxScroll) {
+      if (_bAtTop && scrollPosition >= 0.0 && scrollPosition <= _maxScroll) {
         widget.bodyScrollController.position.jumpToWithoutSettling(
             scrollPosition);
       }
@@ -183,8 +202,13 @@ class ParallaxState extends State<Parallax>
     double vX = details.velocity.pixelsPerSecond.dx;
     double vY = details.velocity.pixelsPerSecond.dy;
 
-    if (_bAtTop || _bAtParallax || _bAtBottom)
+    if (_bAtParallax || _bAtBottom) return;
+
+    if (_bAtTop) {
+      _bodyScrollGoingOn = true;
+      _initAnimation(begin: 0.0, end: vY);
       return;
+    }
 
     if (_bInFirstQuarter) {
       if (vY > _velocityThreshold) {
