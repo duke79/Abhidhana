@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myapp/model/Screen.dart';
 import 'package:myapp/data/Strings.dart';
 import 'package:myapp/widgets/SearchBar.dart';
@@ -13,6 +14,10 @@ class Search extends StatelessWidget {
     /*Initialization*/
     Screen.updateScreen(context);
 
+    /*Hide StatusBar (top) & Android buttons (bottom)
+  https://stackoverflow.com/a/43879271/9404410*/
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+
     return new Scaffold(
       /*appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -26,7 +31,13 @@ class Search extends StatelessWidget {
             //SearchView
             new Builder(builder: _searchView,),
             //SuggestionsView
-            new SuggestionsView(key:_keySuggestions),
+            new SuggestionsView(
+              key: _keySuggestions,
+              onSelected: (word) {
+                Navigator.of(context).pushReplacementNamed(
+                    Strings.route_result + "/" + word);
+              },
+            ),
           ],
         ),
       ),
@@ -46,6 +57,10 @@ class Search extends StatelessWidget {
             onChangedCB: (value) {
               _keySuggestions.currentState.prefix = value;
             },
+            onSubmittedCB: (value) {
+              Navigator.of(context).pushReplacementNamed(
+                  Strings.route_result + "/" + value);
+            },
             focusNode: focusNode,
             decoration: new InputDecoration(
               labelStyle: Theme
@@ -64,7 +79,8 @@ class Search extends StatelessWidget {
 
   /*Local fields*/
   final TextEditingController _controller = new TextEditingController();
-  static final GlobalKey<Suggestions> _keySuggestions = new GlobalKey<Suggestions>();
+  static final GlobalKey<Suggestions> _keySuggestions = new GlobalKey<
+      Suggestions>();
 
   /*Public fields*/
   FocusNode focusNode;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/data/Strings.dart';
 
-class SearchViewParams{
+class SearchViewParams {
   TextEditingController controller;
   FocusNode focusNode;
   var onSubmittedCB;
@@ -19,25 +19,19 @@ class SearchViewParams{
 }
 
 class SearchBar extends StatefulWidget {
-  SearchViewParams params;
+  final SearchViewParams params;
 
-  SearchBar(this.params){
+  SearchBar(this.params) {
     debugPrint(Strings.trace_searchView);
   }
 
   @override
-  SearchViewState createState() =>
-      new SearchViewState(this.params);
+  SearchViewState createState() => new SearchViewState();
 }
 
 class SearchViewState extends State<SearchBar> {
-  SearchViewParams params;
 
-  SearchViewState(this.params);
-
-  @override
-  void didUpdateWidget(SearchBar oldWidget) {
-  }
+  SearchViewState();
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +39,15 @@ class SearchViewState extends State<SearchBar> {
         alignment: const Alignment(1.0, 1.0),
         children: <Widget>[
           new TextField(
-            controller: params.controller,
-            focusNode: params.focusNode,
-            onSubmitted: params.onSubmittedCB,
-            onChanged: params.onChangedCB,
-            style: params.style,
-            decoration:params.decoration,
+            controller: widget.params.controller,
+            focusNode: widget.params.focusNode,
+            onSubmitted: widget.params.onSubmittedCB,
+            onChanged: widget.params.onChangedCB,
+            style: widget.params.style,
+            decoration: widget.params.decoration,
           ),
           new FlatButton(
-              onPressed: () => params.controller.clear(),
+              onPressed: () => widget.params.controller.clear(),
               child: new Icon(Icons.clear)),
         ]
     );

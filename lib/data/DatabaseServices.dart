@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:myapp/data/Strings.dart';
 import 'package:myapp/model/Trie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -61,5 +62,21 @@ class DatabaseServices {
     _db = await openDatabase(path);
     _db.setVersion(VERSION);
     return _db;
+  }
+
+  static Stream<String> definitions(String word) async* {
+    String query = Strings.SQL_SELECT_WORD_DEFINITION.replaceAll(
+        new RegExp(Strings.SQL_VAR_INPUT1), word
+    );
+
+    List<Map> list = await (await DatabaseServices.db).rawQuery(query);
+
+    for(Map elem in list) {
+      if (null != elem) {
+        String definition = elem["definition"].toString().replaceAll(
+            "\n", "");
+        yield definition;
+      }
+    }
   }
 }

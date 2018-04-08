@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 
 class ChargingStatus extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return new ChargingStatusState();
-  }
+  State<StatefulWidget> createState() => new ChargingStatusState();
 }
 
 class ChargingStatusState extends State<ChargingStatus>{

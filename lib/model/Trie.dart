@@ -141,13 +141,17 @@ class Trie {
   List<String> suggestions(String prefix, {int length}) {
     List<String> list = new List();
     TrieNode lastNode = root;
-    int i = 0;
-    for (i = 0; i < prefix.length; i++) {
-      lastNode = lastNode.getChild(prefix[i]);
-      if (lastNode == null) {
-        return list;
+    if (null != prefix) {
+      int i = 0;
+      for (i = 0; i < prefix.length; i++) {
+        lastNode = lastNode.getChild(prefix[i]);
+        if (lastNode == null) {
+          return list;
+        }
       }
+      return lastNode.suggestions(
+          prefix.substring(0, prefix.length - 1), length: length, list: list);
     }
-    return lastNode.suggestions(prefix.substring(0, prefix.length - 1), length: length, list: list);
+    return list;
   }
 }
